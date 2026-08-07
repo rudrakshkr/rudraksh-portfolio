@@ -1,5 +1,5 @@
 import HeroContent from "./HeroContent"
-import HeroTerminal from "./terminal/HeroTerminal"
+import HeroTerminal from "./HeroTerminal"
 
 export default function Hero() {
     return (

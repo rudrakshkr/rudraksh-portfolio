@@ -25,3 +25,10 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@keyframes dash-flow {
+  to { stroke-dashoffset: -24; }
+}
+.dash-flow {
+  animation: dash-flow 1.2s linear infinite;
+}
