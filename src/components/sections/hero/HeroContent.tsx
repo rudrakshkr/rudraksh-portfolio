@@ -83,6 +83,24 @@ export default function HeroContent() {
                     Github
                 </a>
             </div>
+
+            {/* Hero Stats  */}
+            <div className="mt-14 grid grid-cols-3 max-w-lg gap-6 border-t border-white/8 pt-7">
+                <div>
+                    <p className="font-display text-2xl font-medium tracking-tight text-white sm:text-[28px]">5+</p>
+                    <p className="mt-1 text-[12.5px] leading-snug text-[#8A919E]">Production-ready projects built</p>
+                </div>
+
+                <div>
+                    <p className="font-display text-2xl font-medium tracking-tight text-white sm:text-[28px]">60+</p>
+                    <p className="mt-1 text-[12.5px] leading-snug text-[#8A919E]">DSA Problems Solved</p>
+                </div>
+
+                <div>
+                    <p className="font-display text-2xl font-medium tracking-tight text-white sm:text-[28px]">3+</p>
+                    <p className="mt-1 text-[12.5px] leading-snug text-[#8A919E]">Verified Certificates</p>
+                </div>
+            </div>
         </div>
     )
 }
