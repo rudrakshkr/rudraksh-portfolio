@@ -28,7 +28,7 @@ const SCRIPT: Line[] = [
 
   { kind: 'cmd', text: 'npm run deploy', sets: { deploy: 'run' } },
   { kind: 'muted', text: '→ Uploading optimized assets...', pause: 420 },
-  { kind: 'out', text: '→ Uploading optimized assets...', pause: 460 },
+  { kind: 'out', text: '→ Publishing portfolio to Vercel', pause: 460 },
   { kind: 'ok', text: '✓ Portfolio deployed successfully', pause: 620, sets: { deploy: 'done' } },
 
   { kind: 'cmd', text: 'curl -s /api/health' },
