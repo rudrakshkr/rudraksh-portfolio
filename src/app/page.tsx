@@ -1,8 +1,9 @@
-import Hero from "@/components/sections/hero/Hero";
 import Navbar from "@/components/layout/Navbar";
+import Hero from "@/components/sections/hero/Hero";
+import FeaturedProjects from "@/components/sections/featured-projects/FeaturedProjects";
+import Capabilities from "@/components/sections/Capabilities";
 import About from "@/components/sections/About";
 import Contact from "@/components/sections/Contact";
-import FeaturedProjects from "@/components/sections/featured-projects/FeaturedProjects";
 import Skills from "@/components/sections/Skills";
 import Footer from "@/components/sections/Footer";
 
@@ -13,6 +14,7 @@ export default function Home() {
       <main>
         <Hero />
         <FeaturedProjects />
+        < Capabilities />
         {/* <About /> */}
         {/* <Skills /> */}
         {/* <Contact /> */}
