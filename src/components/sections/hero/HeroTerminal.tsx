@@ -107,7 +107,24 @@ export default function HeroTerminal() {
   }, [index, typed])
 
   return (
-    <div className="relative z-10 mx-auto max-w-120 overflow-hidden rounded-2xl border border-white/9 bg-[#0C0E11] shadow-lift">
+    <motion.div
+      initial={{
+          opacity: 0,
+          y: 28,
+          scale: 0.985,
+      }}
+      animate={{
+          opacity: 1,
+          y: 0,
+          scale: 1,
+      }}
+      transition={{
+          duration: 0.7,
+          delay: 0.22,
+          ease: [0.22, 1, 0.36, 1],
+      }}
+      className="relative z-10 mx-auto max-w-120 overflow-hidden rounded-2xl border border-white/9 bg-[#0C0E11] shadow-lift"
+  >
       {/* Window Bar */}
       <div className="flex items-center gap-2.5 border-b border-white/[0.07] px-4 py-3">
         <TerminalIcon className="h-3.5 w-3.5 text-[#8A919E]" aria-hidden="true" />
@@ -216,7 +233,7 @@ export default function HeroTerminal() {
         <Wire active={deployed} />
         <Node label="Edge" active={deployed} />
       </div>
-    </div>
+    </motion.div>
   )
 }
 
