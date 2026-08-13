@@ -5,7 +5,6 @@ import Capabilities from "@/components/sections/Capabilities";
 import About from "@/components/sections/About";
 import Contact from "@/components/sections/Contact";
 import Skills from "@/components/sections/Skills";
-import Footer from "@/components/sections/Footer";
 
 export default function Home() {
   return (
@@ -16,10 +15,9 @@ export default function Home() {
         <FeaturedProjects />
         < Capabilities />
         <Skills />
+        <Contact />
         {/* <About /> */}
-        {/* <Contact /> */}
       </main>
-      {/* <Footer /> */}
     </>
   );
 }
