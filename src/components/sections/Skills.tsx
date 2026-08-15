@@ -1,21 +1,56 @@
-"use client";
+"use client"
 
 import {
+    Cloud,
     Database,
     Layers3,
     Server,
     Wrench,
-    Cloud
-} from "lucide-react";
+} from "lucide-react"
+import { motion, type Variants } from "framer-motion"
+import type { ComponentType } from "react"
 
-import { motion, type Variants } from "framer-motion";
+import {
+    SiCloudinary,
+    SiCss,
+    SiEslint,
+    SiExpress,
+    SiGit,
+    SiGithub,
+    SiHtml5,
+    SiJavascript,
+    SiNodedotjs,
+    SiPostgresql,
+    SiPostman,
+    SiPrisma,
+    SiReact,
+    SiRailway,
+    SiRender,
+    SiSocketdotio,
+    SiTailwindcss,
+    SiTypescript,
+    SiVercel,
+    SiVite,
+    SiVitest,
+    SiMysql,
+    SiPrettier
+} from "react-icons/si"
+
+import { TbApi } from "react-icons/tb"
+
+type SkillItem = {
+    name: string
+    icon?: ComponentType<{
+        className?: string
+    }>
+}
 
 type SkillGroup = {
-    category: string;
-    label: string;
-    icon: typeof Layers3;
-    skills: string[];
-};
+    category: string
+    label: string
+    icon: typeof Layers3
+    skills: SkillItem[]
+}
 
 const skillGroups: SkillGroup[] = [
     {
@@ -23,13 +58,13 @@ const skillGroups: SkillGroup[] = [
         label: "Frontend",
         icon: Layers3,
         skills: [
-            "React",
-            "JavaScript",
-            "TypeScript",
-            "HTML",
-            "CSS",
-            "Tailwind CSS",
-            "Vite",
+            { name: "React", icon: SiReact },
+            { name: "JavaScript", icon: SiJavascript },
+            { name: "TypeScript", icon: SiTypescript },
+            { name: "HTML", icon: SiHtml5 },
+            { name: "CSS", icon: SiCss },
+            { name: "Tailwind CSS", icon: SiTailwindcss },
+            { name: "Vite", icon: SiVite },
         ],
     },
     {
@@ -37,10 +72,10 @@ const skillGroups: SkillGroup[] = [
         label: "Backend",
         icon: Server,
         skills: [
-            "Node.js",
-            "Express",
-            "REST APIs",
-            "Socket.IO",
+            { name: "Node.js", icon: SiNodedotjs },
+            { name: "Express", icon: SiExpress },
+            { name: "REST APIs", icon: TbApi },
+            { name: "Socket.IO", icon: SiSocketdotio },
         ],
     },
     {
@@ -48,9 +83,9 @@ const skillGroups: SkillGroup[] = [
         label: "Database",
         icon: Database,
         skills: [
-            "PostgreSQL",
-            "Prisma",
-            "SQL",
+            { name: "PostgreSQL", icon: SiPostgresql },
+            { name: "Prisma", icon: SiPrisma },
+            { name: "SQL", icon: SiMysql },
         ],
     },
     {
@@ -58,12 +93,12 @@ const skillGroups: SkillGroup[] = [
         label: "Tools",
         icon: Wrench,
         skills: [
-            "Git",
-            "GitHub",
-            "ESLint",
-            "Prettier",
-            "Vitest",
-            "Postman"
+            { name: "Git", icon: SiGit },
+            { name: "GitHub", icon: SiGithub },
+            { name: "ESLint", icon: SiEslint },
+            { name: "Prettier", icon: SiPrettier },
+            { name: "Vitest", icon: SiVitest },
+            { name: "Postman", icon: SiPostman },
         ],
     },
     {
@@ -71,299 +106,406 @@ const skillGroups: SkillGroup[] = [
         label: "Cloud",
         icon: Cloud,
         skills: [
-            "Vercel",
-            "Railway",
-            "Render",
-            "Cloudinary"
-        ]
-    }
-];
+            { name: "Vercel", icon: SiVercel },
+            { name: "Railway", icon: SiRailway },
+            { name: "Render", icon: SiRender },
+            { name: "Cloudinary", icon: SiCloudinary },
+        ],
+    },
+]
 
 const containerVariants: Variants = {
     hidden: {},
     visible: {
         transition: {
-            staggerChildren: 0.12,
+            delayChildren: 0.2,
+            staggerChildren: 0.16,
         },
     },
-};
+}
 
 const rowVariants: Variants = {
     hidden: {
         opacity: 0,
-        y: 30,
+        y: 32,
     },
     visible: {
         opacity: 1,
         y: 0,
         transition: {
-            duration: 0.7,
+            duration: 0.8,
             ease: [0.22, 1, 0.36, 1],
         },
     },
-};
-
-const skillVariants: Variants = {
-    hidden: {
-        opacity: 0,
-        y: 8,
-    },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.4,
-            ease: "easeOut",
-        },
-    },
-};
+}
 
 export default function Skills() {
     return (
-        <section className="relative overflow-hidden bg-[#15171C] py-28 text-white sm:py-36">
+        <section
+            id="skills"
+            className="
+                relative
+                w-full
+                overflow-hidden
+                bg-[#EEF2F7]
+                py-24
+                text-[#11151A]
+                sm:py-32
+            "
+        >
+
             <div
                 className="
-                    pointer-events-none absolute inset-0 opacity-[0.025]
-                    bg-[linear-gradient(to_right,rgba(255,255,255,0.9)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.9)_1px,transparent_1px)]
-                    bg-size-[48px_48px]
+                    pointer-events-none
+                    absolute inset-x-0 top-0
+                    h-24
+                    bg-linear-to-b
+                    from-white/70
+                    to-transparent
                 "
             />
 
-            <motion.div
-                animate={{
-                    x: ["-20%", "20%", "-20%"],
-                    y: ["0%", "15%", "0%"],
-                }}
-                transition={{
-                    duration: 14,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                }}
-                className="
-                    pointer-events-none absolute
-                    -top-40 left-1/2
-                    h-125 w-125
-                    -translate-x-1/2
-                    rounded-full
-                    bg-blue-500/6
-                    blur-[120px]
-                "
-            />
-
-            <div className="relative mx-auto max-w-5xl px-6 lg:px-8">
+            <div className="relative mx-auto max-w-6xl px-6 lg:px-8">
 
                 {/* Header */}
+
                 <motion.div
-                    initial={{ opacity: 0, y: 25 }}
+                    initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.4 }}
+                    viewport={{ once: true, amount: 0.35 }}
                     transition={{
-                        duration: 0.7,
+                        duration: 0.8,
                         ease: [0.22, 1, 0.36, 1],
                     }}
-                    className="max-w-2xl"
                 >
-                    <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-blue-300">
-                        <motion.span
-                            animate={{
-                                scale: [1, 1.4, 1],
-                                opacity: [0.7, 1, 0.7],
-                            }}
-                            transition={{
-                                duration: 2,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                            }}
-                            className="h-1.5 w-1.5 rounded-full bg-blue-400"
+                    <div
+                        className="
+                            inline-flex
+                            items-center
+                            gap-2.5
+                            font-mono
+                            text-[10px]
+                            uppercase
+                            tracking-[0.18em]
+                            text-[#77818D]
+                        "
+                    >
+                        <span
+                            className="
+                                h-1.5
+                                w-1.5
+                                rounded-full
+                                bg-[#4F78D6]
+                            "
                         />
 
                         Technical Stack
                     </div>
 
-                    <h2 className="mt-5 font-display text-[clamp(2.2rem,5vw,3.8rem)] font-medium leading-[1.02] tracking-tighter text-white">
-                        The stack I work with.
+                    <h2
+                        className="
+                            mt-5
+                            max-w-3xl
+                            font-display
+                            text-[clamp(2.5rem,5vw,4.2rem)]
+                            font-medium
+                            leading-[0.94]
+                            tracking-[-0.06em]
+                            text-[#101418]
+                        "
+                    >
+                        The tools behind the work.
                     </h2>
 
-                    <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-[#AEB4BF]">
-                        A practical stack built around shipping full-stack
-                        applications, not collecting logos.
+                    <p
+                        className="
+                            mt-6
+                            max-w-2xl
+                            text-[16px]
+                            leading-[1.7]
+                            text-[#66717D]
+                            sm:text-[17px]
+                        "
+                    >
+                        The technologies I use across interfaces, APIs,
+                        databases, tooling and deployment.
                     </p>
                 </motion.div>
 
-                {/* Skills */}
+                {/* Skill Groups */}
+
                 <motion.div
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{
                         once: true,
-                        amount: 0.15,
+                        amount: 0.12,
                     }}
                     className="
-                        mt-16 overflow-hidden rounded-3xl
-                        border border-white/11
-                        bg-[#191C22]
-                        shadow-[0_30px_80px_rgba(0,0,0,0.22)]
+                        mt-14
+                        overflow-hidden
+                        rounded-[28px]
+                        border
+                        border-[#DCE2EA]
+                        bg-[#F7F9FC]
+                        shadow-[0_22px_60px_rgba(30,48,72,0.07)]
+                        sm:mt-16
                     "
                 >
                     {skillGroups.map((group, index) => {
-                        const Icon = group.icon;
+                        const GroupIcon = group.icon
 
                         return (
                             <motion.div
                                 key={group.label}
                                 variants={rowVariants}
-                                whileHover={{
-                                    backgroundColor: "rgba(255,255,255,0.035)",
-                                }}
                                 className={`
-                                    group relative grid gap-8
+                                    group
+                                    relative
                                     px-6 py-8
-                                    sm:px-8
-                                    md:grid-cols-[220px_1fr]
-                                    md:items-center
+                                    sm:px-8 sm:py-9
                                     lg:px-10
                                     ${
-                                        index !== skillGroups.length - 1
-                                            ? "border-b border-white/9"
+                                        index !==
+                                        skillGroups.length - 1
+                                            ? "border-b border-[#E1E6ED]"
                                             : ""
                                     }
                                 `}
                             >
-                                {/* Category */}
-                                <div className="relative flex items-center gap-4">
-
-                                    <motion.div
-                                        whileHover={{
-                                            y: -4,
-                                            rotate: -4,
-                                            scale: 1.05,
-                                        }}
-                                        transition={{
-                                            type: "spring",
-                                            stiffness: 400,
-                                            damping: 20,
-                                        }}
-                                        className="
-                                            relative grid h-11 w-11 shrink-0
-                                            place-items-center rounded-2xl
-                                            border border-blue-300/15
-                                            bg-blue-400/9
-                                            text-blue-300
-                                            shadow-[0_0_0_rgba(59,130,246,0)]
-                                            transition-colors duration-300
-                                            group-hover:border-blue-300/30
-                                            group-hover:bg-blue-400/13
-                                            group-hover:text-blue-200
-                                            group-hover:shadow-[0_10px_30px_rgba(59,130,246,0.12)]
-                                        "
-                                    >
-                                        <Icon
-                                            className="h-4.5 w-4.5"
-                                            strokeWidth={1.8}
-                                        />
-
-                                        <motion.span
-                                            animate={{
-                                                opacity: [0, 1, 0],
-                                                scale: [0.5, 1.2, 0.5],
-                                            }}
-                                            transition={{
-                                                duration: 2.5,
-                                                repeat: Infinity,
-                                                delay: index * 0.4,
-                                            }}
-                                            className="
-                                                absolute -right-1 -top-1
-                                                h-2 w-2 rounded-full
-                                                bg-blue-400
-                                                shadow-[0_0_12px_rgba(96,165,250,0.8)]
-                                            "
-                                        />
-                                    </motion.div>
-
-                                    <div>
-                                        <p className="font-display text-[15px] font-medium text-white">
-                                            {group.label}
-                                        </p>
-
-                                        <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-[#69717E]">
-                                            {group.category}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {/* Skills */}
-                                <motion.div
-                                    variants={containerVariants}
-                                    className="relative flex flex-wrap gap-2"
+                                <div
+                                    className="
+                                        grid
+                                        gap-8
+                                        md:grid-cols-[190px_1fr]
+                                        md:items-center
+                                    "
                                 >
-                                    {group.skills.map((skill) => (
-                                        <motion.span
-                                            key={skill}
-                                            variants={skillVariants}
-                                            whileHover={{
-                                                y: -4,
-                                                scale: 1.03,
-                                            }}
-                                            transition={{
-                                                type: "spring",
-                                                stiffness: 400,
-                                                damping: 22,
-                                            }}
+                                    {/* Category */}
+
+                                    <div className="flex items-center gap-4">
+                                        <div
                                             className="
-                                                cursor-default
+                                                grid
+                                                h-11 w-11
+                                                shrink-0
+                                                place-items-center
                                                 rounded-xl
-                                                border border-white/11
-                                                bg-[#20242B]
-                                                px-3.5 py-2
-                                                font-mono text-[11px]
-                                                text-[#C2C7D0]
-                                                transition-colors duration-300
-                                                hover:border-blue-300/30
-                                                hover:bg-blue-400/10
-                                                hover:text-blue-200
-                                                hover:shadow-[0_10px_25px_rgba(59,130,246,0.09)]
+                                                border
+                                                border-[#DCE2EA]
+                                                bg-[#E9EEF5]
+                                                text-[#697583]
+                                                transition-all
+                                                duration-300
+                                                group-hover:border-[#4F78D6]/30
+                                                group-hover:bg-[#E6ECF8]
+                                                group-hover:text-[#4F78D6]
                                             "
                                         >
-                                            {skill}
-                                        </motion.span>
-                                    ))}
-                                </motion.div>
+                                            <GroupIcon
+                                                className="h-4 w-4"
+                                                strokeWidth={1.7}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <p
+                                                className="
+                                                    font-display
+                                                    text-[15px]
+                                                    font-medium
+                                                    tracking-[-0.01em]
+                                                    text-[#1B2025]
+                                                "
+                                            >
+                                                {group.label}
+                                            </p>
+
+                                            <p
+                                                className="
+                                                    mt-1
+                                                    font-mono
+                                                    text-[9px]
+                                                    uppercase
+                                                    tracking-[0.16em]
+                                                    text-[#929AA4]
+                                                "
+                                            >
+                                                {group.category}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Technologies */}
+
+                                    <div
+                                        className="
+                                            flex
+                                            flex-wrap
+                                            items-center
+                                            gap-x-6
+                                            gap-y-7
+                                            sm:gap-x-8
+                                            lg:gap-x-10
+                                        "
+                                    >
+                                        {group.skills.map((skill) => {
+                                            const SkillIcon = skill.icon
+
+                                            return (
+                                                <motion.div
+                                                    key={skill.name}
+                                                    whileHover={{
+                                                        y: -3,
+                                                    }}
+                                                    transition={{
+                                                        duration: 0.18,
+                                                        ease: "easeOut",
+                                                    }}
+                                                    className="
+                                                        group/skill
+                                                        flex
+                                                        min-w-15.5
+                                                        cursor-default
+                                                        flex-col
+                                                        items-center
+                                                        gap-2.5
+                                                    "
+                                                >
+                                                    <div
+                                                        className="
+                                                            relative
+                                                            grid
+                                                            h-12 w-12
+                                                            place-items-center
+                                                            rounded-[14px]
+                                                            border
+                                                            border-[#DCE2EA]
+                                                            bg-white
+                                                            text-[#78838F]
+                                                            shadow-[0_6px_18px_rgba(40,55,75,0.05)]
+                                                            transition-all
+                                                            duration-300
+                                                            group-hover/skill:border-[#4F78D6]/35
+                                                            group-hover/skill:bg-[#F8FAFF]
+                                                            group-hover/skill:text-[#4F78D6]
+                                                            group-hover/skill:shadow-[0_10px_24px_rgba(50,80,140,0.09)]
+                                                        "
+                                                    >
+                                                        <span
+                                                            className="
+                                                                pointer-events-none
+                                                                absolute
+                                                                inset-0
+                                                                rounded-[14px]
+                                                                border
+                                                                border-[#4F78D6]/0
+                                                                transition-all
+                                                                duration-300
+                                                                group-hover/skill:-inset-0.75
+                                                                group-hover/skill:border-[#4F78D6]/15
+                                                            "
+                                                        />
+
+                                                        {SkillIcon ? (
+                                                            <SkillIcon className="relative h-5.25 w-5.25" />
+                                                        ) : (
+                                                            <span
+                                                                className="
+                                                                    relative
+                                                                    font-mono
+                                                                    text-[13px]
+                                                                    text-[#8C969F]
+                                                                "
+                                                            >
+                                                                •
+                                                            </span>
+                                                        )}
+                                                    </div>
+
+                                                    <span
+                                                        className="
+                                                            max-w-23.75
+                                                            text-center
+                                                            font-mono
+                                                            text-[9px]
+                                                            leading-tight
+                                                            text-[#7C8792]
+                                                            transition-colors
+                                                            duration-200
+                                                            group-hover/skill:text-[#4F78D6]
+                                                        "
+                                                    >
+                                                        {skill.name}
+                                                    </span>
+                                                </motion.div>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
                             </motion.div>
-                        );
+                        )
                     })}
                 </motion.div>
 
                 {/* Bottom note */}
+
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
+                    initial={{
+                        opacity: 0,
+                    }}
+                    whileInView={{
+                        opacity: 1,
+                    }}
+                    viewport={{
+                        once: true,
+                    }}
                     transition={{
                         delay: 0.5,
                         duration: 0.7,
                     }}
-                    className="mt-8 flex items-center gap-3"
+                    className="
+                        mt-10
+                        flex
+                        items-center
+                        gap-3
+                    "
                 >
                     <motion.span
-                        animate={{
-                            width: ["2.5rem", "4rem", "2.5rem"],
+                        initial={{
+                            width: "2.5rem",
+                        }}
+                        whileInView={{
+                            width: "4rem",
+                        }}
+                        viewport={{
+                            once: true,
                         }}
                         transition={{
-                            duration: 3,
-                            repeat: Infinity,
-                            ease: "easeInOut",
+                            duration: 0.6,
+                            delay: 0.55,
+                            ease: [0.22, 1, 0.36, 1],
                         }}
-                        className="h-px bg-blue-300/40"
+                        className="
+                            h-px
+                            bg-[#4F78D6]/40
+                        "
                     />
 
-                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#69717E]">
-                        Built with what I know · learning what's next
+                    <p
+                        className="
+                            font-mono
+                            text-[10px]
+                            uppercase
+                            tracking-[0.18em]
+                            text-[#929AA4]
+                        "
+                    >
+                        Technologies I use in practice
                     </p>
                 </motion.div>
-
             </div>
         </section>
-    );
+    )
 }
