@@ -27,24 +27,29 @@ export type Project = {
 export const projects: Project[] = [
     {
         id: 1,
-        year: "2025",
+        year: "2026",
         title: "Nexus Messaging App",
         description:
-            "Real-time messaging with presence, delivery receipts and offline sync.",
+            "Real-time full-stack messaging platform with delivery tracking, replies, group management, media sharing and an integrated AI assistant.",
 
         highlights: [
-            "Real-time messaging with Socket.IO",
-            "Optimistic message updates",
-            "AI-powered chat assistance",
+            "AI Copilot with summaries, task extraction and Magic Compose",
+            "Live presence, typing indicators and read receipts",
+            "Role-based group management with media uploads",
         ],
 
         techStack: [
             "React",
-            "TypeScript",
+            "Vite",
+            "Tailwind CSS",
             "Node.js",
             "Express",
             "Socket.IO",
+            "Prisma",
             "PostgreSQL",
+            "JWT",
+            "Cloudinary",
+            "Google Gemini",
         ],
 
         image:
@@ -57,41 +62,56 @@ export const projects: Project[] = [
             },
             {
                 src: "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1200&q=80",
-                caption: "Conversation and presence",
+                caption: "Conversations and real-time presence",
             },
             {
                 src: "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=80",
-                caption: "Real-time interaction",
+                caption: "Real-time collaboration",
             },
         ],
 
-        github: "#",
-        liveDemo: "#",
+        github:
+            "https://github.com/rudrakshkr/nexus-messaging-app",
+
+        liveDemo:
+            "https://nexus-messaging-app.vercel.app",
 
         architecture: [
             {
-                title: "React Client",
+                title: "React + Vite Client",
                 description:
-                    "Owns the messaging interface, application state and real-time UI updates presented to the user.",
+                    "Provides the responsive messaging interface, authentication flows, conversation UI and client-side application state.",
                 type: "client",
             },
             {
-                title: "Node.js + Express",
+                title: "Node.js + Express API",
                 description:
-                    "Provides the API layer for authentication, users, conversations and persistent message operations.",
+                    "Handles authentication, users, rooms, participants, messages and persistent application operations.",
                 type: "server",
             },
             {
                 title: "Socket.IO",
                 description:
-                    "Provides the real-time communication layer for messaging, presence and delivery events.",
+                    "Provides bidirectional real-time communication for messages, typing indicators, presence and delivery events.",
                 type: "service",
             },
             {
-                title: "PostgreSQL",
+                title: "PostgreSQL + Prisma",
                 description:
-                    "Persists users, conversations, messages and other durable application state.",
+                    "Stores users, rooms, participants and messages, including message editing, deletion and reply relationships.",
                 type: "database",
+            },
+            {
+                title: "Google Gemini",
+                description:
+                    "Powers the AI Copilot features including conversation summaries, task extraction and message rewriting.",
+                type: "service",
+            },
+            {
+                title: "Cloudinary",
+                description:
+                    "Handles uploaded media used within conversations, including image storage and fullscreen previews.",
+                type: "service",
             },
         ],
 
@@ -100,25 +120,29 @@ export const projects: Project[] = [
 
     {
         id: 2,
-        year: "2025",
+        year: "2026",
         title: "PahariKnits",
         description:
-            "Full-stack e-commerce platform for handcrafted apparel with secure checkout and inventory management.",
+            "Full-stack D2C e-commerce platform for handcrafted Himalayan apparel with passwordless checkout, inventory-aware orders, admin operations and return management.",
 
         highlights: [
-            "Passwordless OTP authentication",
-            "Cart-aware inventory system",
-            "JWT-secured admin dashboard",
+            "Passwordless email OTP authentication for customers",
+            "Razorpay checkout with payment verification and receipts",
+            "Cart-aware inventory and order tracking",
         ],
 
         techStack: [
             "React",
+            "React Router",
+            "Tailwind CSS",
             "Node.js",
             "Express",
-            "PostgreSQL",
             "Prisma",
-            "Tailwind CSS",
+            "PostgreSQL",
+            "Neon",
             "JWT",
+            "Razorpay",
+            "Brevo",
         ],
 
         image:
@@ -131,40 +155,55 @@ export const projects: Project[] = [
             },
             {
                 src: "https://images.unsplash.com/photo-1556740714-a8395b3bf30f?auto=format&fit=crop&w=1200&q=80",
-                caption: "Product browsing",
+                caption: "Customer dashboard",
             },
             {
                 src: "https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&w=1200&q=80",
-                caption: "Shopping experience",
+                caption: "Admin operations",
             },
         ],
 
-        github: "#",
-        liveDemo: "#",
+        github:
+            "https://github.com/rudrakshkr/pahari-knits",
+
+        liveDemo:
+            "https://pahari-knits.vercel.app",
 
         architecture: [
             {
                 title: "React Storefront",
                 description:
-                    "Provides product browsing, cart interactions and the customer-facing checkout experience.",
+                    "Responsive customer-facing application with product discovery, category filtering, cart management, checkout and order tracking.",
                 type: "client",
             },
             {
                 title: "Express API",
                 description:
-                    "Handles authentication, products, orders, inventory and administrative operations.",
+                    "Backend application handling products, authentication, orders, payments, returns, feedback and protected admin operations.",
                 type: "server",
             },
             {
                 title: "PostgreSQL + Prisma",
                 description:
-                    "Provides the structured data layer for products, users, inventory, orders and application state.",
+                    "Relational data layer for products, inventory, orders, order items and returns, with PostgreSQL hosted on Neon.",
                 type: "database",
             },
             {
-                title: "Payment Service",
+                title: "Customer Authentication",
                 description:
-                    "Handles payment processing as an external service within the checkout flow.",
+                    "Passwordless email OTP authentication used for customer access to order history and account functionality.",
+                type: "service",
+            },
+            {
+                title: "Admin Authentication",
+                description:
+                    "JWT-based protected routes restrict access to administrative catalog, order and return management operations.",
+                type: "service",
+            },
+            {
+                title: "Razorpay + Brevo",
+                description:
+                    "Razorpay handles payment creation and verification, while Brevo supports transactional emails including OTPs and receipts.",
                 type: "service",
             },
         ],
@@ -174,25 +213,26 @@ export const projects: Project[] = [
 
     {
         id: 3,
-        year: "2025",
+        year: "2026",
         title: "MyDevBlog",
         description:
-            "Decoupled blogging platform with a public client, REST API and private content management system.",
+            "Decoupled full-stack blogging platform with a public React client, private administration dashboard and REST API.",
 
         highlights: [
-            "Decoupled monorepo architecture",
-            "JWT authentication with RBAC",
-            "Rich-text content management",
+            "Decoupled frontend, admin and backend architecture",
+            "JWT authentication with role-based access control",
+            "Post publishing, drafts, categories and tags",
         ],
 
         techStack: [
             "React",
-            "Vite",
+            "React Router",
+            "Tailwind CSS",
+            "Shadcn/UI",
             "Node.js",
             "Express",
-            "PostgreSQL",
             "Prisma",
-            "Tailwind CSS",
+            "PostgreSQL",
             "JWT",
         ],
 
@@ -210,37 +250,46 @@ export const projects: Project[] = [
             },
             {
                 src: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?auto=format&fit=crop&w=1200&q=80",
-                caption: "Content management",
+                caption: "Admin dashboard",
             },
         ],
 
-        github: "#",
-        liveDemo: "#",
+        github:
+            "https://github.com/rudrakshkr/odin-blog-project",
+
+        liveDemo:
+            "https://mydevblog-theta.vercel.app",
 
         architecture: [
             {
-                title: "React + Vite",
+                title: "React Blog Client",
                 description:
-                    "The public-facing client handles browsing, navigation and reading published blog content.",
+                    "The public-facing application handles navigation, article browsing and reading published content.",
+                type: "client",
+            },
+            {
+                title: "React Admin Panel",
+                description:
+                    "A separate private client provides CRUD functionality for managing posts and administrative content.",
                 type: "client",
             },
             {
                 title: "Express REST API",
                 description:
-                    "The central API layer handles posts, users, authentication and content operations.",
+                    "The backend provides the central API for authentication, posts, users and content management operations.",
                 type: "server",
-            },
-            {
-                title: "Admin CMS",
-                description:
-                    "A private client provides the interface for creating, editing and managing blog content.",
-                type: "client",
             },
             {
                 title: "PostgreSQL + Prisma",
                 description:
-                    "The database layer persists users, posts and application data through a typed access layer.",
+                    "Stores users, posts and comments through a relational schema managed with Prisma.",
                 type: "database",
+            },
+            {
+                title: "JWT + BcryptJS",
+                description:
+                    "Provides authentication and password protection, with RBAC distinguishing regular users from administrators.",
+                type: "service",
             },
         ],
 
