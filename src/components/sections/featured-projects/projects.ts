@@ -36,6 +36,8 @@ export const projects: Project[] = [
             "AI Copilot with summaries, task extraction and Magic Compose",
             "Live presence, typing indicators and read receipts",
             "Role-based group management with media uploads",
+            "Cursor-based infinite scrolling",
+            "RBAC-secured group chat environments",
         ],
 
         techStack: [
@@ -129,6 +131,8 @@ export const projects: Project[] = [
             "Passwordless email OTP authentication for customers",
             "Razorpay checkout with payment verification and receipts",
             "Cart-aware inventory and order tracking",
+            "JWT-protected admin dashboard for catalog and order management",
+            "Multi-step return and reverse logistics workflow",
         ],
 
         techStack: [
@@ -222,6 +226,8 @@ export const projects: Project[] = [
             "Decoupled frontend, admin and backend architecture",
             "JWT authentication with role-based access control",
             "Post publishing, drafts, categories and tags",
+            "Server-side post filtering (published vs. draft) and tag-based categorization",
+            "TinyMCE-powered rich-text editor",
         ],
 
         techStack: [

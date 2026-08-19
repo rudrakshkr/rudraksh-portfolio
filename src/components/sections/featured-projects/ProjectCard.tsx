@@ -89,7 +89,7 @@ export default function ProjectCard({
                             </p>
 
                             <div className="mt-2 space-y-1.5">
-                                {project.highlights.map((highlight) => (
+                                {project.highlights.slice(0,3).map((highlight) => (
                                     <div
                                         key={highlight}
                                         className="
