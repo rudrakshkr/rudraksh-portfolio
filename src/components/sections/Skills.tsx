@@ -18,12 +18,15 @@ import {
     SiGit,
     SiGithub,
     SiHtml5,
+    SiPassport,
     SiJavascript,
     SiNodedotjs,
     SiPostgresql,
     SiPostman,
     SiPrisma,
     SiReact,
+    SiNextdotjs,
+    SiJsonwebtokens,
     SiRailway,
     SiRender,
     SiSocketdotio,
@@ -33,6 +36,8 @@ import {
     SiVite,
     SiVitest,
     SiMysql,
+    SiLinux,
+    SiFigma,
     SiPrettier
 } from "react-icons/si"
 
@@ -65,6 +70,7 @@ const skillGroups: SkillGroup[] = [
             { name: "CSS", icon: SiCss },
             { name: "Tailwind CSS", icon: SiTailwindcss },
             { name: "Vite", icon: SiVite },
+            { name: "Next.js", icon: SiNextdotjs },
         ],
     },
     {
@@ -76,6 +82,8 @@ const skillGroups: SkillGroup[] = [
             { name: "Express", icon: SiExpress },
             { name: "REST APIs", icon: TbApi },
             { name: "Socket.IO", icon: SiSocketdotio },
+            { name: "Passport.js", icon: SiPassport },
+            { name: "JWT", icon: SiJsonwebtokens },
         ],
     },
     {
@@ -99,6 +107,8 @@ const skillGroups: SkillGroup[] = [
             { name: "Prettier", icon: SiPrettier },
             { name: "Vitest", icon: SiVitest },
             { name: "Postman", icon: SiPostman },
+            {name: "Linux", icon: SiLinux},
+            { name: "Figma", icon: SiFigma },
         ],
     },
     {

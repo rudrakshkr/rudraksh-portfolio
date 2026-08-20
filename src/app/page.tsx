@@ -8,7 +8,7 @@ import Skills from "@/components/sections/Skills";
 export default function Home() {
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <main>
         <Hero />
         <FeaturedProjects />
