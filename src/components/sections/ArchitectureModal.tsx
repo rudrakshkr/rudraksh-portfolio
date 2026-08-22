@@ -1,6 +1,14 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import {
+    useEffect,
+    useRef,
+    useState,
+    type Dispatch,
+    type MutableRefObject,
+    type RefObject,
+    type SetStateAction,
+} from "react"
 import { createPortal } from "react-dom"
 import { AnimatePresence, motion } from "framer-motion"
 import {
@@ -24,12 +32,13 @@ type ArchitectureModalProps = {
     onClose: () => void
 }
 
+type GalleryRef = RefObject<HTMLDivElement | null>
+
 const customEase = [0.16, 1, 0.3, 1] as const
 
 const staggerContainer = {
-    hidden: { opacity: 0 },
+    hidden: {},
     visible: {
-        opacity: 1,
         transition: {
             staggerChildren: 0.1,
         },
@@ -57,16 +66,36 @@ export default function ArchitectureModal({
 }: ArchitectureModalProps) {
     const desktopScrollRef = useRef<HTMLDivElement>(null)
 
-    const galleryRef = useRef<HTMLDivElement>(null)
+    /*
+     * IMPORTANT:
+     * Desktop and mobile have separate gallery elements.
+     * They therefore need separate refs.
+     */
+    const desktopGalleryRef = useRef<HTMLDivElement>(null)
+    const mobileGalleryRef = useRef<HTMLDivElement>(null)
+
+    /*
+     * Keeps track of which gallery is currently being dragged.
+     */
+    const activeGalleryRef =
+        useRef<GalleryRef | null>(null)
+
     const galleryDragStart = useRef(0)
     const galleryStartScroll = useRef(0)
     const galleryDragging = useRef(false)
     const galleryMoved = useRef(false)
 
-    const [selectedImage, setSelectedImage] = useState<number | null>(null)
-    const [dragStart, setDragStart] = useState<number | null>(null)
+    const [selectedImage, setSelectedImage] =
+        useState<number | null>(null)
+
+    const [dragStart, setDragStart] =
+        useState<number | null>(null)
 
     const screenshots = project?.screenshots ?? []
+
+    /* ================================================================
+       FULLSCREEN VIEWER
+    ================================================================= */
 
     const closeViewer = () => {
         setSelectedImage(null)
@@ -75,7 +104,10 @@ export default function ArchitectureModal({
 
     const previousImage = () => {
         setSelectedImage((current) => {
-            if (current === null || screenshots.length === 0) {
+            if (
+                current === null ||
+                screenshots.length === 0
+            ) {
                 return current
             }
 
@@ -87,7 +119,10 @@ export default function ArchitectureModal({
 
     const nextImage = () => {
         setSelectedImage((current) => {
-            if (current === null || screenshots.length === 0) {
+            if (
+                current === null ||
+                screenshots.length === 0
+            ) {
                 return current
             }
 
@@ -97,12 +132,14 @@ export default function ArchitectureModal({
         })
     }
 
-    /* -------------------------------------------------------------
-       Keyboard + body scroll lock
-    ------------------------------------------------------------- */
+    /* ================================================================
+       KEYBOARD + BODY SCROLL LOCK
+    ================================================================= */
 
     useEffect(() => {
-        if (!project) return
+        if (!project) {
+            return
+        }
 
         const handleKeyDown = (event: KeyboardEvent) => {
             if (selectedImage !== null) {
@@ -129,31 +166,81 @@ export default function ArchitectureModal({
             }
         }
 
-        document.addEventListener("keydown", handleKeyDown)
+        document.addEventListener(
+            "keydown",
+            handleKeyDown
+        )
 
-        const previousOverflow = document.body.style.overflow
+        const previousOverflow =
+            document.body.style.overflow
+
         document.body.style.overflow = "hidden"
 
         return () => {
-            document.removeEventListener("keydown", handleKeyDown)
-            document.body.style.overflow = previousOverflow
+            document.removeEventListener(
+                "keydown",
+                handleKeyDown
+            )
+
+            document.body.style.overflow =
+                previousOverflow
         }
     }, [project, selectedImage, onClose])
 
-    useEffect(() => {
-        const gallery = galleryRef.current
+    /* ================================================================
+       CONTINUOUS AUTO-SCROLL
+       BOTH DESKTOP + MOBILE GALLERIES MOVE
+    ================================================================= */
 
-        if (!gallery || screenshots.length === 0) {
+    useEffect(() => {
+        if (screenshots.length === 0) {
             return
         }
 
         let animationFrame: number
 
         const autoScroll = () => {
-            if (!galleryDragging.current) {
+            const galleries = [
+                desktopGalleryRef.current,
+                mobileGalleryRef.current,
+            ].filter(
+                (
+                    gallery
+                ): gallery is HTMLDivElement =>
+                    gallery !== null
+            )
+
+            galleries.forEach((gallery) => {
+                /*
+                 * Don't fight the user's drag.
+                 */
+                if (
+                    activeGalleryRef.current?.current ===
+                    gallery
+                ) {
+                    return
+                }
+
+                /*
+                 * Hidden galleries can still have scroll
+                 * positions, but we only need the visible one
+                 * to animate.
+                 */
+                if (
+                    gallery.offsetWidth === 0 &&
+                    gallery.offsetHeight === 0
+                ) {
+                    return
+                }
+
                 gallery.scrollLeft += 0.5
 
-                const halfway = gallery.scrollWidth / 2
+                /*
+                 * Because the screenshots are duplicated,
+                 * reset to the halfway point to create a loop.
+                 */
+                const halfway =
+                    gallery.scrollWidth / 2
 
                 if (
                     halfway > 0 &&
@@ -161,40 +248,60 @@ export default function ArchitectureModal({
                 ) {
                     gallery.scrollLeft -= halfway
                 }
-            }
+            })
 
-            animationFrame = requestAnimationFrame(autoScroll)
+            animationFrame =
+                requestAnimationFrame(autoScroll)
         }
 
-        animationFrame = requestAnimationFrame(autoScroll)
+        animationFrame =
+            requestAnimationFrame(autoScroll)
 
         return () => {
             cancelAnimationFrame(animationFrame)
         }
     }, [screenshots.length])
 
+    /* ================================================================
+       GALLERY POINTER DOWN
+    ================================================================= */
+
     const handleGalleryPointerDown = (
-        event: React.PointerEvent<HTMLDivElement>
+        event: React.PointerEvent<HTMLDivElement>,
+        galleryRef: GalleryRef
     ) => {
         const gallery = galleryRef.current
 
-        if (!gallery) return
+        if (!gallery) {
+            return
+        }
+
+        activeGalleryRef.current = galleryRef
 
         galleryDragging.current = true
         galleryMoved.current = false
         galleryDragStart.current = event.clientX
-        galleryStartScroll.current = gallery.scrollLeft
+        galleryStartScroll.current =
+            gallery.scrollLeft
     }
 
+    /* ================================================================
+       GALLERY WHEEL
+    ================================================================= */
+
     const handleGalleryWheel = (
-        event: React.WheelEvent<HTMLDivElement>
+        event: React.WheelEvent<HTMLDivElement>,
+        galleryRef: GalleryRef
     ) => {
         const gallery = galleryRef.current
 
-        if (!gallery) return
+        if (!gallery) {
+            return
+        }
 
         const horizontalDelta =
-            Math.abs(event.deltaX) > Math.abs(event.deltaY)
+            Math.abs(event.deltaX) >
+            Math.abs(event.deltaY)
                 ? event.deltaX
                 : 0
 
@@ -204,35 +311,45 @@ export default function ArchitectureModal({
         }
     }
 
+    /* ================================================================
+       GLOBAL GALLERY DRAG HANDLING
+    ================================================================= */
+
     useEffect(() => {
-        const handlePointerMove = (event: PointerEvent) => {
+        const handleWindowPointerMove = (
+            event: PointerEvent
+        ) => {
             if (!galleryDragging.current) {
                 return
             }
 
-            const gallery = galleryRef.current
+            const gallery =
+                activeGalleryRef.current?.current
 
             if (!gallery) {
                 return
             }
 
             const distance =
-                event.clientX - galleryDragStart.current
+                event.clientX -
+                galleryDragStart.current
 
             if (Math.abs(distance) > 5) {
                 galleryMoved.current = true
             }
 
             gallery.scrollLeft =
-                galleryStartScroll.current - distance
+                galleryStartScroll.current -
+                distance
         }
 
-        const handlePointerUp = () => {
+        const handleWindowPointerUp = () => {
             if (!galleryDragging.current) {
                 return
             }
 
             galleryDragging.current = false
+            activeGalleryRef.current = null
 
             if (galleryMoved.current) {
                 setTimeout(() => {
@@ -243,33 +360,33 @@ export default function ArchitectureModal({
 
         window.addEventListener(
             "pointermove",
-            handlePointerMove
+            handleWindowPointerMove
         )
 
         window.addEventListener(
             "pointerup",
-            handlePointerUp
+            handleWindowPointerUp
         )
 
         window.addEventListener(
             "pointercancel",
-            handlePointerUp
+            handleWindowPointerUp
         )
 
         return () => {
             window.removeEventListener(
                 "pointermove",
-                handlePointerMove
+                handleWindowPointerMove
             )
 
             window.removeEventListener(
                 "pointerup",
-                handlePointerUp
+                handleWindowPointerUp
             )
 
             window.removeEventListener(
                 "pointercancel",
-                handlePointerUp
+                handleWindowPointerUp
             )
         }
     }, [])
@@ -317,7 +434,7 @@ export default function ArchitectureModal({
                             text-zinc-900
                         "
                     >
-                        {/* Mobile close */}
+                        {/* Mobile close button */}
                         <button
                             type="button"
                             onClick={onClose}
@@ -349,7 +466,7 @@ export default function ArchitectureModal({
 
                         {/* =================================================
                             DESKTOP
-                            ================================================= */}
+                        ================================================== */}
 
                         <div
                             className="
@@ -359,7 +476,7 @@ export default function ArchitectureModal({
                                 lg:flex
                             "
                         >
-                            {/* Desktop left panel */}
+                            {/* Left information panel */}
                             <aside
                                 className="
                                     relative
@@ -383,7 +500,7 @@ export default function ArchitectureModal({
                                 />
                             </aside>
 
-                            {/* Desktop right scroll area */}
+                            {/* Right architecture panel */}
                             <main
                                 ref={desktopScrollRef}
                                 className="
@@ -399,16 +516,18 @@ export default function ArchitectureModal({
                                 <ArchitectureContent
                                     project={project}
                                     screenshots={screenshots}
-                                    galleryRef={galleryRef}
+                                    galleryRef={desktopGalleryRef}
+                                    galleryMoved={
+                                        galleryMoved
+                                    }
+                                    setSelectedImage={
+                                        setSelectedImage
+                                    }
                                     handleGalleryPointerDown={
                                         handleGalleryPointerDown
                                     }
                                     handleGalleryWheel={
                                         handleGalleryWheel
-                                    }
-                                    galleryMoved={galleryMoved}
-                                    setSelectedImage={
-                                        setSelectedImage
                                     }
                                 />
                             </main>
@@ -416,7 +535,13 @@ export default function ArchitectureModal({
 
                         {/* =================================================
                             MOBILE
-                            ================================================= */}
+
+                            IMPORTANT:
+                            There is ONE scroll container here.
+
+                            Project info + topology + capabilities +
+                            screenshots all move together.
+                        ================================================== */}
 
                         <main
                             className="
@@ -427,69 +552,66 @@ export default function ArchitectureModal({
                                 lg:hidden
                             "
                         >
-                            <div className="min-h-full">
-                                {/* Mobile project information */}
+                            <section
+                                className="
+                                    border-b
+                                    border-zinc-200/70
+                                    bg-[#F2F2EF]
+                                    px-5
+                                    pb-8
+                                    pt-7
+                                    sm:px-7
+                                    sm:pb-10
+                                "
+                            >
+                                <MobileProjectInfo
+                                    project={project}
+                                />
+                            </section>
 
+                            <section
+                                className="
+                                    relative
+                                    bg-[#F6F6F3]
+                                    px-5
+                                    py-8
+                                    sm:px-7
+                                    sm:py-10
+                                "
+                            >
                                 <div
                                     className="
-                                        border-b
-                                        border-zinc-200/70
-                                        bg-[#F2F2EF]
-                                        px-5
-                                        pb-8
-                                        pt-7
-                                        sm:px-7
-                                        sm:pb-10
+                                        pointer-events-none
+                                        absolute
+                                        inset-0
+                                        bg-[radial-gradient(#dfe1dd_1px,transparent_1px)]
+                                        bg-size-[20px_20px]
+                                        opacity-[0.3]
                                     "
-                                >
-                                    <MobileProjectInfo
+                                />
+
+                                <div className="relative">
+                                    <ArchitectureContent
                                         project={project}
+                                        screenshots={screenshots}
+                                        galleryRef={
+                                            mobileGalleryRef
+                                        }
+                                        galleryMoved={
+                                            galleryMoved
+                                        }
+                                        setSelectedImage={
+                                            setSelectedImage
+                                        }
+                                        handleGalleryPointerDown={
+                                            handleGalleryPointerDown
+                                        }
+                                        handleGalleryWheel={
+                                            handleGalleryWheel
+                                        }
                                     />
                                 </div>
-
-                                {/* Mobile architecture content */}
-                                <div
-                                    className="
-                                        relative
-                                        bg-[#F6F6F3]
-                                        px-5
-                                        py-8
-                                        sm:px-7
-                                        sm:py-10
-                                    "
-                                >
-                                    <div
-                                        className="
-                                            pointer-events-none
-                                            absolute
-                                            inset-0
-                                            bg-[radial-gradient(#dfe1dd_1px,transparent_1px)]
-                                            bg-size-[20px_20px]
-                                            opacity-[0.3]
-                                        "
-                                    />
-
-                                    <div className="relative">
-                                        <ArchitectureContent
-                                            project={project}
-                                            screenshots={screenshots}
-                                            galleryRef={galleryRef}
-                                            handleGalleryPointerDown={
-                                                handleGalleryPointerDown
-                                            }
-                                            handleGalleryWheel={
-                                                handleGalleryWheel
-                                            }
-                                            galleryMoved={
-                                                galleryMoved
-                                            }
-                                            setSelectedImage={
-                                                setSelectedImage
-                                            }
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                            </section>
                         </main>
                     </motion.div>
                 )}
@@ -645,7 +767,7 @@ export default function ArchitectureModal({
                                 </button>
                             )}
 
-                            {/* Image / swipe area */}
+                            {/* Image + swipe area */}
                             <div
                                 className="
                                     relative
@@ -662,6 +784,7 @@ export default function ArchitectureModal({
                                 "
                                 onPointerDown={(event) => {
                                     event.stopPropagation()
+
                                     setDragStart(
                                         event.clientX
                                     )
@@ -669,7 +792,9 @@ export default function ArchitectureModal({
                                 onPointerUp={(event) => {
                                     event.stopPropagation()
 
-                                    if (dragStart === null) {
+                                    if (
+                                        dragStart === null
+                                    ) {
                                         return
                                     }
 
@@ -679,7 +804,9 @@ export default function ArchitectureModal({
 
                                     if (distance > 60) {
                                         previousImage()
-                                    } else if (distance < -60) {
+                                    } else if (
+                                        distance < -60
+                                    ) {
                                         nextImage()
                                     }
 
@@ -810,7 +937,11 @@ export default function ArchitectureModal({
                                     sm:text-[9px]
                                 "
                             >
-                                {screenshots[selectedImage].caption}
+                                {
+                                    screenshots[
+                                        selectedImage
+                                    ].caption
+                                }
                             </div>
                         </motion.div>
                     )}
@@ -866,7 +997,9 @@ function MobileProjectInfo({
 }: {
     project: Project
 }) {
-    return <ProjectInfoContent project={project} />
+    return (
+        <ProjectInfoContent project={project} />
+    )
 }
 
 /* ================================================================
@@ -894,7 +1027,11 @@ function ProjectInfoContent({
                     delay: 0.1,
                     duration: 0.5,
                 }}
-                className="flex items-center gap-3"
+                className="
+                    flex
+                    items-center
+                    gap-3
+                "
             >
                 <span
                     className="
@@ -929,7 +1066,11 @@ function ProjectInfoContent({
                     "
                 >
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                    {project.status.replace("-", " ")}
+
+                    {project.status.replace(
+                        "-",
+                        " "
+                    )}
                 </span>
             </motion.div>
 
@@ -991,13 +1132,17 @@ function ProjectInfoContent({
                 {project.description}
             </motion.p>
 
-            {/* Mobile divider */}
+            {/* Mobile separator */}
             <div className="mt-6 border-t border-zinc-200/80 lg:hidden" />
 
-            {/* Tech stack */}
+            {/* Tech Stack */}
             <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={{
+                    opacity: 0,
+                }}
+                animate={{
+                    opacity: 1,
+                }}
                 transition={{
                     delay: 0.4,
                 }}
@@ -1022,31 +1167,40 @@ function ProjectInfoContent({
                     Tech Stack
                 </h3>
 
-                <div className="flex flex-wrap gap-1.5 lg:gap-2">
-                    {project.techStack.map((tech) => (
-                        <span
-                            key={tech}
-                            className="
-                                rounded-md
-                                border
-                                border-zinc-200/60
-                                bg-zinc-50/50
-                                px-2
-                                py-1
-                                text-[10px]
-                                font-medium
-                                text-zinc-600
-                                lg:px-2.5
-                                lg:text-xs
-                            "
-                        >
-                            {tech}
-                        </span>
-                    ))}
+                <div
+                    className="
+                        flex
+                        flex-wrap
+                        gap-1.5
+                        lg:gap-2
+                    "
+                >
+                    {project.techStack.map(
+                        (tech) => (
+                            <span
+                                key={tech}
+                                className="
+                                    rounded-md
+                                    border
+                                    border-zinc-200/60
+                                    bg-zinc-50/50
+                                    px-2
+                                    py-1
+                                    text-[10px]
+                                    font-medium
+                                    text-zinc-600
+                                    lg:px-2.5
+                                    lg:text-xs
+                                "
+                            >
+                                {tech}
+                            </span>
+                        )
+                    )}
                 </div>
             </motion.div>
 
-            {/* Buttons */}
+            {/* Links */}
             <motion.div
                 initial={{
                     opacity: 0,
@@ -1139,24 +1293,26 @@ function ArchitectureContent({
     project,
     screenshots,
     galleryRef,
-    handleGalleryPointerDown,
-    handleGalleryWheel,
     galleryMoved,
     setSelectedImage,
+    handleGalleryPointerDown,
+    handleGalleryWheel,
 }: {
     project: Project
     screenshots: Project["screenshots"]
-    galleryRef: React.RefObject<HTMLDivElement | null>
+    galleryRef: GalleryRef
+    galleryMoved: MutableRefObject<boolean>
+    setSelectedImage: Dispatch<
+        SetStateAction<number | null>
+    >
     handleGalleryPointerDown: (
-        event: React.PointerEvent<HTMLDivElement>
+        event: React.PointerEvent<HTMLDivElement>,
+        galleryRef: GalleryRef
     ) => void
     handleGalleryWheel: (
-        event: React.WheelEvent<HTMLDivElement>
+        event: React.WheelEvent<HTMLDivElement>,
+        galleryRef: GalleryRef
     ) => void
-    galleryMoved: React.MutableRefObject<boolean>
-    setSelectedImage: React.Dispatch<
-        React.SetStateAction<number | null>
-    >
 }) {
     return (
         <>
@@ -1201,14 +1357,22 @@ function ArchitectureContent({
                                 sm:text-sm
                             "
                         >
-                            Architectural breakdown of the request lifecycle.
+                            Architectural breakdown of
+                            the request lifecycle.
                         </p>
                     </div>
 
                     <Layers className="h-5 w-5 shrink-0 text-zinc-300" />
                 </div>
 
-                <div className="relative ml-1 sm:ml-3 lg:ml-8">
+                <div
+                    className="
+                        relative
+                        ml-1
+                        sm:ml-3
+                        lg:ml-8
+                    "
+                >
                     <div
                         className="
                             absolute
@@ -1223,7 +1387,14 @@ function ArchitectureContent({
                         "
                     />
 
-                    <div className="flex flex-col gap-5 sm:gap-8">
+                    <div
+                        className="
+                            flex
+                            flex-col
+                            gap-5
+                            sm:gap-8
+                        "
+                    >
                         {project.architecture.map(
                             (node, index) => (
                                 <ArchitectureNodeBlock
@@ -1316,7 +1487,10 @@ function ArchitectureContent({
                     "
                 >
                     {project.highlights.map(
-                        (highlight, index) => (
+                        (
+                            highlight,
+                            index
+                        ) => (
                             <motion.div
                                 key={index}
                                 variants={fadeUpItem}
@@ -1355,7 +1529,10 @@ function ArchitectureContent({
                                 >
                                     {String(
                                         index + 1
-                                    ).padStart(2, "0")}
+                                    ).padStart(
+                                        2,
+                                        "0"
+                                    )}
                                 </span>
 
                                 <div
@@ -1423,7 +1600,16 @@ function ArchitectureContent({
                 INTERFACE SHOWCASE
             ========================================================== */}
 
-            <section className="mt-20 pb-12 sm:mt-24 sm:pb-16 lg:mt-32 lg:pb-20">
+            <section
+                className="
+                    mt-20
+                    pb-12
+                    sm:mt-24
+                    sm:pb-16
+                    lg:mt-32
+                    lg:pb-20
+                "
+            >
                 <div
                     className="
                         mb-7
@@ -1479,11 +1665,29 @@ function ArchitectureContent({
                     </span>
                 </div>
 
-                {/* Moving gallery */}
+                {/* =====================================================
+                    MOVING SCREENSHOT STRIP
+
+                    - Continuous automatic movement
+                    - Drag with mouse
+                    - Drag/swipe on mobile
+                    - Click opens fullscreen
+                ====================================================== */}
+
                 <div
                     ref={galleryRef}
-                    onPointerDown={handleGalleryPointerDown}
-                    onWheel={handleGalleryWheel}
+                    onPointerDown={(event) =>
+                        handleGalleryPointerDown(
+                            event,
+                            galleryRef
+                        )
+                    }
+                    onWheel={(event) =>
+                        handleGalleryWheel(
+                            event,
+                            galleryRef
+                        )
+                    }
                     className="
                         flex
                         cursor-grab
@@ -1496,130 +1700,203 @@ function ArchitectureContent({
                         active:cursor-grabbing
                     "
                 >
-                    <div className="flex w-max gap-4 sm:gap-6">
+                    <div
+                        className="
+                            flex
+                            w-max
+                            gap-4
+                            sm:gap-6
+                        "
+                    >
                         {[
                             ...screenshots,
                             ...screenshots,
-                        ].map((shot, index) => {
-                            const imageIndex =
-                                index % screenshots.length
+                        ].map(
+                            (
+                                shot,
+                                index
+                            ) => {
+                                const imageIndex =
+                                    index %
+                                    screenshots.length
 
-                            return (
-                                <button
-                                    key={`${shot.src}-${index}`}
-                                    type="button"
-                                    onClick={() => {
-                                        if (galleryMoved.current) {
-                                            return
-                                        }
-
-                                        setSelectedImage(
-                                            imageIndex
-                                        )
-                                    }}
-                                    className="
-                                        group
-                                        relative
-                                        w-[78vw]
-                                        max-w-85
-                                        shrink-0
-                                        overflow-hidden
-                                        rounded-xl
-                                        border
-                                        border-zinc-200/80
-                                        bg-[#FBFBF9]
-                                        text-left
-                                        shadow-sm
-                                        transition-all
-                                        duration-500
-                                        hover:-translate-y-1
-                                        hover:shadow-lg
-                                        sm:w-120
-                                        sm:max-w-none
-                                        sm:rounded-2xl
-                                    "
-                                >
-                                    <div className="relative aspect-16/10 w-full overflow-hidden bg-zinc-100">
-                                        <img
-                                            src={
-                                                shot.src ||
-                                                project.image
+                                return (
+                                    <button
+                                        key={`${shot.src}-${index}`}
+                                        type="button"
+                                        onClick={() => {
+                                            if (
+                                                galleryMoved.current
+                                            ) {
+                                                return
                                             }
-                                            alt={shot.caption}
-                                            className="
-                                                h-full
-                                                w-full
-                                                object-contain
-                                                transition-transform
-                                                duration-700
-                                                ease-out
-                                                group-hover:scale-105
-                                            "
-                                            loading="lazy"
-                                            draggable={false}
-                                        />
 
-                                        <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10" />
-
-                                        <div
-                                            className="
-                                                absolute
-                                                right-3
-                                                top-3
-                                                flex
-                                                h-8
-                                                w-8
-                                                items-center
-                                                justify-center
-                                                rounded-full
-                                                border
-                                                border-white/40
-                                                bg-black/20
-                                                text-white
-                                                opacity-100
-                                                backdrop-blur-md
-                                                sm:right-4
-                                                sm:top-4
-                                                sm:h-9
-                                                sm:w-9
-                                                sm:opacity-0
-                                                sm:transition-all
-                                                sm:duration-300
-                                                sm:group-hover:opacity-100
-                                            "
-                                        >
-                                            <Maximize2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                                        </div>
-                                    </div>
-
-                                    <div
+                                            setSelectedImage(
+                                                imageIndex
+                                            )
+                                        }}
                                         className="
-                                            border-t
-                                            border-zinc-100
+                                            group
+                                            relative
+                                            w-[78vw]
+                                            max-w-85
+                                            shrink-0
+                                            overflow-hidden
+                                            rounded-xl
+                                            border
+                                            border-zinc-200/80
                                             bg-[#FBFBF9]
-                                            px-4
-                                            py-3
-                                            sm:px-5
-                                            sm:py-4
+                                            text-left
+                                            shadow-sm
+                                            transition-all
+                                            duration-500
+                                            hover:-translate-y-1
+                                            hover:shadow-lg
+                                            sm:w-120
+                                            sm:max-w-none
+                                            sm:rounded-2xl
                                         "
                                     >
-                                        <div className="flex items-center justify-between gap-4">
-                                            <span className="truncate font-display text-[12px] font-medium tracking-[-0.01em] text-zinc-700 sm:text-sm">
-                                                {shot.caption}
-                                            </span>
+                                        {/* Image */}
+                                        <div
+                                            className="
+                                                relative
+                                                aspect-16/10
+                                                w-full
+                                                overflow-hidden
+                                                bg-zinc-100
+                                            "
+                                        >
+                                            <img
+                                                src={
+                                                    shot.src ||
+                                                    project.image
+                                                }
+                                                alt={
+                                                    shot.caption
+                                                }
+                                                className="
+                                                    h-full
+                                                    w-full
+                                                    object-contain
+                                                    transition-transform
+                                                    duration-700
+                                                    ease-out
+                                                    group-hover:scale-105
+                                                "
+                                                loading="lazy"
+                                                draggable={
+                                                    false
+                                                }
+                                            />
 
-                                            <span className="font-mono text-[8px] uppercase tracking-widest text-zinc-400 sm:text-[10px]">
-                                                View
-                                            </span>
+                                            <div
+                                                className="
+                                                    pointer-events-none
+                                                    absolute
+                                                    inset-0
+                                                    bg-black/0
+                                                    transition-colors
+                                                    duration-300
+                                                    group-hover:bg-black/10
+                                                "
+                                            />
+
+                                            <div
+                                                className="
+                                                    absolute
+                                                    right-3
+                                                    top-3
+                                                    flex
+                                                    h-8
+                                                    w-8
+                                                    items-center
+                                                    justify-center
+                                                    rounded-full
+                                                    border
+                                                    border-white/40
+                                                    bg-black/20
+                                                    text-white
+                                                    opacity-100
+                                                    backdrop-blur-md
+                                                    sm:right-4
+                                                    sm:top-4
+                                                    sm:h-9
+                                                    sm:w-9
+                                                    sm:opacity-0
+                                                    sm:transition-all
+                                                    sm:duration-300
+                                                    sm:group-hover:opacity-100
+                                                "
+                                            >
+                                                <Maximize2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                                            </div>
                                         </div>
-                                    </div>
-                                </button>
-                            )
-                        })}
+
+                                        {/* Caption */}
+                                        <div
+                                            className="
+                                                border-t
+                                                border-zinc-100
+                                                bg-[#FBFBF9]
+                                                px-4
+                                                py-3
+                                                sm:px-5
+                                                sm:py-4
+                                            "
+                                        >
+                                            <div className="flex items-center justify-between gap-4">
+                                                <span
+                                                    className="
+                                                        truncate
+                                                        font-display
+                                                        text-[12px]
+                                                        font-medium
+                                                        tracking-[-0.01em]
+                                                        text-zinc-700
+                                                        sm:text-sm
+                                                    "
+                                                >
+                                                    {
+                                                        shot.caption
+                                                    }
+                                                </span>
+
+                                                <span
+                                                    className="
+                                                        shrink-0
+                                                        font-mono
+                                                        text-[8px]
+                                                        uppercase
+                                                        tracking-widest
+                                                        text-zinc-400
+                                                        sm:text-[10px]
+                                                    "
+                                                >
+                                                    View
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </button>
+                                )
+                            }
+                        )}
                     </div>
                 </div>
 
-                <p className="mt-4 text-center font-mono text-[9px] uppercase tracking-[0.14em] text-zinc-400 sm:text-[10px] sm:tracking-widest">
+                <p
+                    className="
+                        mt-4
+                        text-center
+                        font-mono
+                        text-[9px]
+                        uppercase
+                        tracking-[0.14em]
+                        text-zinc-400
+                        sm:text-[10px]
+                        sm:tracking-widest
+                    "
+                >
                     Drag to move images · Click to fullscreen
                 </p>
             </section>
@@ -1645,18 +1922,21 @@ function ArchitectureNodeBlock({
             bg: "bg-blue-50",
             border: "border-blue-100/50",
         },
+
         server: {
             icon: Server,
             color: "text-emerald-600",
             bg: "bg-emerald-50",
             border: "border-emerald-100/50",
         },
+
         database: {
             icon: Database,
             color: "text-purple-600",
             bg: "bg-purple-50",
             border: "border-purple-100/50",
         },
+
         service: {
             icon: Box,
             color: "text-amber-600",
@@ -1727,7 +2007,7 @@ function ArchitectureNodeBlock({
                 />
             </div>
 
-            {/* Content */}
+            {/* Node card */}
             <div
                 className="
                     min-w-0
