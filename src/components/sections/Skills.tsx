@@ -501,7 +501,7 @@ export default function Skills() {
                                                     <span
                                                         className="
                                                             w-full
-                                                            max-w-[88px]
+                                                            max-w-22
                                                             text-center
                                                             font-mono
                                                             text-[8px]
@@ -510,7 +510,7 @@ export default function Skills() {
                                                             transition-colors
                                                             duration-200
                                                             group-hover/skill:text-[#4F78D6]
-                                                            sm:max-w-[95px]
+                                                            sm:max-w-23.75
                                                             sm:text-[9px]
                                                         "
                                                     >
