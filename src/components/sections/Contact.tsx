@@ -328,7 +328,7 @@ export default function Contact() {
                     `}
                 >
                     <p className="font-mono text-[10px] text-[#79808e]">
-                        © 2026 Rudraksh Kumar · Built with React, TypeScript and Tailwind
+                        © 2026 Rudraksh Kumar · Built with Next.js, React, TypeScript and Tailwind CSS
                     </p>
 
                     <a

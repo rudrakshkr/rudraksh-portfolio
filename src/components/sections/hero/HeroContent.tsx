@@ -2,67 +2,159 @@
 
 export default function HeroContent() {
     const go = (id: string) => {
-        document.getElementById(id)?.scrollIntoView({behavior: 'smooth', block: 'start'});
+        document
+            .getElementById(id)
+            ?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            })
     }
-    
+
     return (
-        <div className="flex flex-col items-start gap-2">
+        <div
+            className="
+                flex
+                w-full
+                flex-col
+                items-start
+                lg:max-w-2xl
+            "
+        >
             {/* Hero Badge */}
-            <div className="hero-reveal hero-delay-1 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/4 px-3 py-1.5 mb-2">
-                <span className="relative flex h-2 w-2">
+            <div
+                className="
+                    hero-reveal hero-delay-1
+                    mb-5
+                    inline-flex
+                    max-w-full
+                    items-center
+                    gap-2.5
+                    rounded-full
+                    border
+                    border-white/10
+                    bg-white/4
+                    px-3
+                    py-1.5
+                    sm:mb-6
+                "
+            >
+                <span className="relative flex h-2 w-2 shrink-0">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                     <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
                 </span>
 
-                <span className="font-mono text-[13px] tracking-wider text-[rgb(var(--ink-300))]">
+                <span
+                    className="
+                        min-w-0
+                        font-mono
+                        text-[9px]
+                        leading-tight
+                        tracking-[0.12em]
+                        text-[rgb(var(--ink-300))]
+                        sm:text-[10px]
+                        sm:tracking-[0.14em]
+                        md:text-[11px]
+                        lg:text-[12px]
+                        xl:text-[13px]
+                        xl:tracking-wider
+                    "
+                >
                     AVAILABLE FOR FULL-TIME ENGINEERING ROLES
                 </span>
             </div>
 
-            {/* Hero Header */}
-            <div className="hero-reveal hero-delay-2 text-6xl md:text-8xl lg:text-[6rem] font-medium leading-[0.9] tracking-[-0.07em] text-white">
+            {/* Hero Heading */}
+            <div
+                className="
+                    hero-reveal hero-delay-2
+                    font-display
+                    font-medium
+                    leading-[0.9]
+                    tracking-[-0.07em]
+                    text-white
+                    text-[clamp(3.2rem,14vw,5.2rem)]
+                    sm:text-[clamp(4.2rem,10vw,6rem)]
+                    md:text-[clamp(4.8rem,8vw,6.5rem)]
+                    lg:text-[clamp(4.8rem,5.6vw,6.2rem)]
+                "
+            >
                 <p>Full Stack</p>
                 <p>Software</p>
                 <p>Engineer</p>
             </div>
 
-            {/* Hero Paragraph */}
-            <div className="hero-reveal hero-delay-3 mt-6 max-w-xl text-lg md:text-xl leading-relaxed text-[rgb(var(--ink-300))]">
+            {/* Description */}
+            <div
+                className="
+                    hero-reveal hero-delay-3
+                    mt-6
+                    max-w-2xl
+                    text-[15px]
+                    leading-7
+                    text-[rgb(var(--ink-300))]
+                    sm:mt-7
+                    sm:text-[16px]
+                    sm:leading-7
+                    md:text-[18px]
+                    md:leading-8
+                "
+            >
                 <p>
-                    I build production-ready web applications with React, Node.js,
-                </p>
-                <p>
+                    I build production-ready web applications with React,
+                    Node.js,{" "}
                     <strong className="text-white">Express</strong> and{" "}
-                    <strong className="text-white">PostgreSQL</strong> — designed for scale,
-                    instrumented
+                    <strong className="text-white">PostgreSQL</strong> — designed
+                    for scale, instrumented for reality, and shipped end to end.
                 </p>
-                <p>for reality, and shipped end to end.</p>
             </div>
 
-            {/* Hero Buttons */}
-            <div className="hero-reveal hero-delay-4 flex gap-4">
+            {/* Buttons */}
+            <div
+                className="
+                    hero-reveal hero-delay-4
+                    mt-8
+                    flex
+                    w-full
+                    flex-wrap
+                    items-center
+                    gap-3
+                    sm:mt-9
+                    sm:gap-4
+                "
+            >
                 <button
+                    onClick={() => go("projects")}
                     className="
-                        group inline-flex items-center gap-2 mt-4
+                        inline-flex
+                        min-h-12
+                        items-center
+                        justify-center
+                        gap-2
                         rounded-xl
                         bg-blue-500
-                        px-5 py-3
-                        text-sm font-semibold text-white
-                        shadow-lg shadow-blue-600/20
-                        transition-all duration-300
+                        px-5
+                        py-3
+                        text-sm
+                        font-semibold
+                        text-white
+                        shadow-lg
+                        shadow-blue-600/20
+                        transition-all
+                        duration-300
                         hover:-translate-y-0.5
                         hover:bg-blue-600
                         focus:outline-none
+                        focus-visible:ring-2
+                        focus-visible:ring-blue-400
                         cursor-pointer
                     "
-                    onClick={() => go("projects")}
                 >
                     View Projects
 
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
+                        width="18"
+                        height="18"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -77,25 +169,36 @@ export default function HeroContent() {
                 </button>
 
                 <button
+                    onClick={() => go("contact")}
                     className="
-                        group inline-flex items-center gap-2 mt-4
+                        inline-flex
+                        min-h-12
+                        items-center
+                        justify-center
+                        gap-2
                         rounded-xl
-                        border border-white/10 bg-white/4
-                        px-5 py-3
-                        text-sm font-semibold text-white
-                        shadow-lg
-                        transition-all duration-300
+                        border
+                        border-white/10
+                        bg-white/4
+                        px-5
+                        py-3
+                        text-sm
+                        font-semibold
+                        text-white
+                        transition-all
+                        duration-300
                         hover:-translate-y-0.5
                         hover:bg-white/8
                         focus:outline-none
+                        focus-visible:ring-2
+                        focus-visible:ring-white/20
                         cursor-pointer
                     "
-                    onClick={() => go("contact")}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
+                        width="18"
+                        height="18"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -116,21 +219,31 @@ export default function HeroContent() {
 
                 <a
                     href="https://github.com/rudrakshkr"
+                    target="_blank"
+                    rel="noreferrer"
                     className="
-                        inline-flex items-center gap-2 mt-4
+                        inline-flex
+                        min-h-12
+                        items-center
+                        justify-center
+                        gap-2
                         rounded-xl
-                        px-4 py-3
-                        text-sm font-medium text-[rgb(var(--ink-300))]
+                        px-4
+                        py-3
+                        text-sm
+                        font-medium
+                        text-[rgb(var(--ink-300))]
                         transition-colors
                         hover:text-white
                         focus:outline-none
-                        cursor-pointer
+                        focus-visible:ring-2
+                        focus-visible:ring-white/20
                     "
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
+                        width="18"
+                        height="18"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -147,35 +260,54 @@ export default function HeroContent() {
                 </a>
             </div>
 
-            {/* Hero Stats */}
-            <div className="hero-reveal hero-delay-5 mt-14 grid grid-cols-3 max-w-lg gap-6 border-t border-white/8 pt-7">
-                <div>
+            {/* Stats */}
+            <div
+                className="
+                    hero-reveal hero-delay-5
+                    mt-12
+                    grid
+                    w-full
+                    max-w-2xl
+                    grid-cols-3
+                    gap-3
+                    border-t
+                    border-white/8
+                    pt-6
+                    sm:mt-14
+                    sm:gap-5
+                    sm:pt-7
+                "
+            >
+                <div className="min-w-0">
                     <p className="font-display text-2xl font-medium tracking-tight text-white sm:text-[28px]">
                         5+
                     </p>
-                    <p className="mt-1 text-[12.5px] leading-snug text-[#8A919E]">
+
+                    <p className="mt-1.5 max-w-32.5 text-[10px] leading-4 text-[#8A919E] sm:text-[12.5px] sm:leading-snug">
                         Production-ready projects built
                     </p>
                 </div>
 
-                <div>
+                <div className="min-w-0">
                     <p className="font-display text-2xl font-medium tracking-tight text-white sm:text-[28px]">
                         60+
                     </p>
-                    <p className="mt-1 text-[12.5px] leading-snug text-[#8A919E]">
+
+                    <p className="mt-1.5 max-w-32.5 text-[10px] leading-4 text-[#8A919E] sm:text-[12.5px] sm:leading-snug">
                         DSA Problems Solved
                     </p>
                 </div>
 
-                <div>
+                <div className="min-w-0">
                     <p className="font-display text-2xl font-medium tracking-tight text-white sm:text-[28px]">
                         3+
                     </p>
-                    <p className="mt-1 text-[12.5px] leading-snug text-[#8A919E]">
+
+                    <p className="mt-1.5 max-w-32.5 text-[10px] leading-4 text-[#8A919E] sm:text-[12.5px] sm:leading-snug">
                         Verified Certificates
                     </p>
                 </div>
             </div>
         </div>
-    );
+    )
 }
