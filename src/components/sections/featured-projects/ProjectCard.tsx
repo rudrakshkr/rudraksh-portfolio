@@ -276,7 +276,7 @@ export default function ProjectCard({
                                 block
                                 h-full
                                 w-full
-                                object-cover
+                                object-contain
                                 transition-transform
                                 duration-500
                                 ease-out

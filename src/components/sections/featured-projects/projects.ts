@@ -55,20 +55,28 @@ export const projects: Project[] = [
         ],
 
         image:
-            "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+            "/nexus-messaging-app/nexus-main.png",
 
         screenshots: [
             {
-                src: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80",
-                caption: "Messaging interface",
+                src: "/nexus-messaging-app/nexus-main.png",
+                caption: "Real-Time Messaging",
             },
             {
-                src: "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1200&q=80",
-                caption: "Conversations and real-time presence",
+                src: "/nexus-messaging-app/nexus-add-members.png",
+                caption: "Group Member Management",
             },
             {
-                src: "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=80",
-                caption: "Real-time collaboration",
+                src: "/nexus-messaging-app/nexus-ai-function.png",
+                caption: "AI Powered Chat Assistance",
+            },
+            {
+                src: "/nexus-messaging-app/nexus-profile.png",
+                caption: "Profile Management",
+            },
+            {
+                src: "/nexus-messaging-app/nexus-sign-up.png",
+                caption: "Account Creation",
             },
         ],
 
@@ -150,20 +158,48 @@ export const projects: Project[] = [
         ],
 
         image:
-            "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=80",
+            "/pahari-knits/pahari-knits-main.png",
 
         screenshots: [
             {
-                src: "https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1200&q=80",
-                caption: "Storefront",
+                src: "/pahari-knits/pahari-knits-login.png",
+                caption: "Customer Authentication",
             },
             {
-                src: "https://images.unsplash.com/photo-1556740714-a8395b3bf30f?auto=format&fit=crop&w=1200&q=80",
-                caption: "Customer dashboard",
+                src: "/pahari-knits/pahari-knits-main.png",
+                caption: "E-Commerce Storefront",
             },
             {
-                src: "https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&w=1200&q=80",
-                caption: "Admin operations",
+                src: "/pahari-knits/pahari-knits-contact.png",
+                caption: "Customer Support",
+            },
+            {
+                src: "/pahari-knits/pahari-knits-shop.png",
+                caption: "Product Catalog",
+            },
+            {
+                src: "/pahari-knits/pahari-knits-product-detail.png",
+                caption: "Product Details",
+            },
+            {
+                src: "/pahari-knits/pahari-knits-checkout.png",
+                caption: "Secure Checkout",
+            },
+            {
+                src: "/pahari-knits/pahari-knits-admin-login.png",
+                caption: "Admin Authentication",
+            },
+            {
+                src: "/pahari-knits/pahari-knits-admin-main.png",
+                caption: "Admin Management",
+            },
+            {
+                src: "/pahari-knits/pahari-knits-admin-add-product.png",
+                caption: "Catalog Management",
+            },
+            {
+                src: "/pahari-knits/pahari-knits-admin-returns.png",
+                caption: "Returns Management",
             },
         ],
 
@@ -171,7 +207,7 @@ export const projects: Project[] = [
             "https://github.com/rudrakshkr/pahari-knits",
 
         liveDemo:
-            "https://pahari-knits.vercel.app",
+            "https://pahariknits.in",
 
         architecture: [
             {
@@ -243,20 +279,47 @@ export const projects: Project[] = [
         ],
 
         image:
-            "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=80",
+            "/my-dev-blog/home-page.png",
 
         screenshots: [
             {
-                src: "https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&w=1200&q=80",
-                caption: "Public blog",
+                src: "/my-dev-blog/login-page.png",
+                caption: "Admin Authentication",
             },
+
             {
-                src: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80",
-                caption: "Article experience",
+                src: "/my-dev-blog/home-page.png",
+                caption: "Public Blog Homepage",
             },
+
             {
-                src: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?auto=format&fit=crop&w=1200&q=80",
-                caption: "Admin dashboard",
+                src: "/my-dev-blog/post-example1.png",
+                caption: "Blog Post View",
+            },
+
+            {
+                src: "/my-dev-blog/post-example2.png",
+                caption: "Content Reading Experience",
+            },
+
+            {
+                src: "/my-dev-blog/comment-section.png",
+                caption: "Post Comments",
+            },
+
+            {
+                src: "/my-dev-blog/about-page.png",
+                caption: "About the Platform",
+            },
+
+            {
+                src: "/my-dev-blog/new-post-ai-prompt.png",
+                caption: "AI-Assisted Post Generation",
+            },
+
+            {
+                src: "/my-dev-blog/example-new-post.png",
+                caption: "AI-Powered Content Editing",
             },
         ],
 

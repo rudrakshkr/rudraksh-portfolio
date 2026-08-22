@@ -169,39 +169,89 @@ export default function ArchitectureModal({
         galleryStartScroll.current = gallery.scrollLeft
     }
 
-    const handleGalleryPointerMove = (
-        e: React.PointerEvent<HTMLDivElement>
+    const handleGalleryWheel = (
+        e: React.WheelEvent<HTMLDivElement>
     ) => {
-        if (!galleryDragging.current) return
-
         const gallery = galleryRef.current
 
         if (!gallery) return
 
-        const distance = e.clientX - galleryDragStart.current
+        const horizontalDelta =
+            Math.abs(e.deltaX) > Math.abs(e.deltaY)
+                ? e.deltaX
+                : 0
 
-        if (Math.abs(distance) > 5) {
-            galleryMoved.current = true
-        }
-
-        gallery.scrollLeft =
-            galleryStartScroll.current - distance
-    }
-
-    const handleGalleryPointerUp = () => {
-        galleryDragging.current = false
-
-        if (galleryMoved.current) {
-            setTimeout(() => {
-                galleryMoved.current = false
-            }, 50)
+        if (horizontalDelta !== 0) {
+            e.preventDefault()
+            gallery.scrollLeft += horizontalDelta
         }
     }
 
-    const handleGalleryPointerCancel = () => {
-        galleryDragging.current = false
-        galleryMoved.current = false
-    }
+    useEffect(() => {
+        const handleWindowPointerMove = (
+            e: PointerEvent
+        ) => {
+            if (!galleryDragging.current) return
+
+            const gallery = galleryRef.current
+
+            if (!gallery) return
+
+            const distance =
+                e.clientX - galleryDragStart.current
+
+            if (Math.abs(distance) > 5) {
+                galleryMoved.current = true
+            }
+
+            gallery.scrollLeft =
+                galleryStartScroll.current - distance
+        }
+
+        const handleWindowPointerUp = () => {
+            if (!galleryDragging.current) return
+
+            galleryDragging.current = false
+
+            if (galleryMoved.current) {
+                setTimeout(() => {
+                    galleryMoved.current = false
+                }, 50)
+            }
+        }
+
+        window.addEventListener(
+            "pointermove",
+            handleWindowPointerMove
+        )
+
+        window.addEventListener(
+            "pointerup",
+            handleWindowPointerUp
+        )
+
+        window.addEventListener(
+            "pointercancel",
+            handleWindowPointerUp
+        )
+
+        return () => {
+            window.removeEventListener(
+                "pointermove",
+                handleWindowPointerMove
+            )
+
+            window.removeEventListener(
+                "pointerup",
+                handleWindowPointerUp
+            )
+
+            window.removeEventListener(
+                "pointercancel",
+                handleWindowPointerUp
+            )
+        }
+    }, [])
 
     if (typeof document === "undefined") return null
 
@@ -540,18 +590,8 @@ export default function ArchitectureModal({
 
                                         <div
                                             ref={galleryRef}
-                                            onPointerDown={
-                                                handleGalleryPointerDown
-                                            }
-                                            onPointerMove={
-                                                handleGalleryPointerMove
-                                            }
-                                            onPointerUp={
-                                                handleGalleryPointerUp
-                                            }
-                                            onPointerCancel={
-                                                handleGalleryPointerCancel
-                                            }
+                                            onPointerDown={handleGalleryPointerDown}
+                                            onWheel={handleGalleryWheel}
                                             className="flex cursor-grab overflow-x-hidden rounded-2xl px-1 py-2 select-none touch-pan-y active:cursor-grabbing"
                                         >
                                             <div className="flex w-max gap-6">
@@ -593,7 +633,7 @@ export default function ArchitectureModal({
                                                                         alt={
                                                                             shot.caption
                                                                         }
-                                                                        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                                                                        className="h-full w-full object-contain transition-transform duration-700 ease-out group-hover:scale-105"
                                                                         loading="lazy"
                                                                         draggable={
                                                                             false
@@ -609,7 +649,7 @@ export default function ArchitectureModal({
 
                                                                 <div className="border-t border-zinc-100 bg-[#FBFBF9] px-5 py-4">
                                                                     <div className="flex items-center justify-between gap-4">
-                                                                        <span className="text-sm font-medium text-zinc-700">
+                                                                        <span className="font-display text-sm font-medium tracking-[-0.01em] text-zinc-700">
                                                                             {
                                                                                 shot.caption
                                                                             }
