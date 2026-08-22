@@ -1,4 +1,10 @@
+"use client"
+
 export default function HeroContent() {
+    const go = (id: string) => {
+        document.getElementById(id)?.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }
+    
     return (
         <div className="flex flex-col items-start gap-2">
             {/* Hero Badge */}
@@ -49,6 +55,7 @@ export default function HeroContent() {
                         focus:outline-none
                         cursor-pointer
                     "
+                    onClick={() => go("projects")}
                 >
                     View Projects
 
@@ -83,6 +90,7 @@ export default function HeroContent() {
                         focus:outline-none
                         cursor-pointer
                     "
+                    onClick={() => go("contact")}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
