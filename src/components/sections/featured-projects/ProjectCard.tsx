@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Layers3 } from "lucide-react"
+import { ArrowUpRight, Layers3 } from "lucide-react"
 import type { Project } from "./projects"
 import ArchitectureModal from "../ArchitectureModal"
 
@@ -19,8 +19,9 @@ export default function ProjectCard({
                     group
                     grid
                     overflow-hidden
-                    rounded-3xl
-                    border border-[#E8EAEE]
+                    rounded-2xl
+                    border
+                    border-[#E8EAEE]
                     bg-white
                     shadow-(--shadow-card)
                     transition-all
@@ -28,102 +29,156 @@ export default function ProjectCard({
                     ease-out
                     hover:-translate-y-1
                     hover:shadow-(--shadow-lift)
-                    md:grid-cols-[1fr_1fr]
+                    md:grid-cols-2
+                    md:rounded-3xl
                 "
             >
-                {/* Left / Content */}
-
-                <div className="flex flex-col justify-between p-7 sm:p-9">
+                {/* Content */}
+                <div
+                    className="
+                        flex
+                        min-w-0
+                        flex-col
+                        justify-between
+                        p-5
+                        sm:p-7
+                        lg:p-9
+                    "
+                >
                     <div>
-                        <div className="flex items-center gap-3">
-                            <span className="font-mono text-[11px] tracking-widest text-[#8A919E]">
-                                <span>
-                                    {String(project.id).padStart(2, "0")}
-                                </span>
-
+                        {/* Meta */}
+                        <div className="flex items-center gap-2.5">
+                            <span
+                                className="
+                                    font-mono
+                                    text-[9px]
+                                    tracking-[0.16em]
+                                    text-[#8A919E]
+                                    sm:text-[11px]
+                                    sm:tracking-widest
+                                "
+                            >
+                                {String(project.id).padStart(2, "0")}
                                 <span className="text-blue-400"> · </span>
-
-                                <span>{project.year}</span>
+                                {project.year}
                             </span>
 
                             <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+
+                            <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-emerald-500 sm:text-[10px]">
+                                {project.status.replace("-", " ")}
+                            </span>
                         </div>
 
+                        {/* Title */}
                         <h3
                             className="
-                                mt-4
+                                mt-3.5
                                 font-display
-                                text-[26px]
+                                text-[24px]
                                 font-medium
-                                tracking-tight
+                                leading-tight
+                                tracking-[-0.04em]
                                 text-[#08090B]
+                                sm:mt-4
                                 sm:text-3xl
                             "
                         >
                             {project.title}
                         </h3>
 
+                        {/* Description */}
                         <p
                             className="
                                 mt-3
-                                max-w-md
-                                text-lg
-                                leading-relaxed
-                                text-[#343A45]
+                                max-w-xl
+                                text-[14px]
+                                leading-6
+                                text-[#4A505B]
+                                sm:text-[16px]
+                                sm:leading-relaxed
                             "
                         >
                             {project.description}
                         </p>
 
-                        <div className="mt-5">
+                        {/* Highlights */}
+                        <div className="mt-5 sm:mt-6">
                             <p
                                 className="
                                     font-mono
-                                    text-[0.85em]
+                                    text-[9px]
                                     uppercase
-                                    tracking-widest
+                                    tracking-[0.16em]
                                     text-[#8A919E]
+                                    sm:text-[10px]
+                                    sm:tracking-widest
                                 "
                             >
                                 Highlights
                             </p>
 
-                            <div className="mt-2 space-y-1.5">
-                                {project.highlights.slice(0,3).map((highlight) => (
-                                    <div
-                                        key={highlight}
-                                        className="
-                                            flex
-                                            items-center
-                                            gap-2
-                                            font-display
-                                            text-[0.90em]
-                                            text-[#343A45]
-                                        "
-                                    >
-                                        <span className="h-1 w-1 shrink-0 rounded-full bg-blue-500" />
+                            <div className="mt-2.5 space-y-2">
+                                {project.highlights
+                                    .slice(0, 3)
+                                    .map((highlight) => (
+                                        <div
+                                            key={highlight}
+                                            className="
+                                                flex
+                                                items-start
+                                                gap-2
+                                                text-[12.5px]
+                                                leading-5
+                                                text-[#343A45]
+                                                sm:text-[14px]
+                                                sm:leading-6
+                                            "
+                                        >
+                                            <span
+                                                className="
+                                                    mt-2
+                                                    h-1
+                                                    w-1
+                                                    shrink-0
+                                                    rounded-full
+                                                    bg-blue-500
+                                                "
+                                            />
 
-                                        <span>{highlight}</span>
-                                    </div>
-                                ))}
+                                            <span>{highlight}</span>
+                                        </div>
+                                    ))}
                             </div>
                         </div>
 
-                        <ul className="mt-6 flex flex-wrap gap-1.5">
+                        {/* Tech stack */}
+                        <ul
+                            className="
+                                mt-5
+                                flex
+                                flex-wrap
+                                gap-1.5
+                                sm:mt-6
+                            "
+                        >
                             {project.techStack.map((stack) => (
                                 <li
                                     key={stack}
                                     className="
-                                        rounded-lg
+                                        rounded-md
                                         bg-[#F4F5F7]
-                                        px-2.5
+                                        px-2
                                         py-1
                                         font-mono
-                                        text-[11px]
-                                        text-[#343A45]
-                                        transition-all
+                                        text-[9px]
+                                        text-[#4A505B]
+                                        transition-colors
                                         duration-300
                                         group-hover:bg-[#EEF0F3]
+                                        sm:rounded-lg
+                                        sm:px-2.5
+                                        sm:text-[11px]
                                     "
                                 >
                                     {stack}
@@ -132,20 +187,33 @@ export default function ProjectCard({
                         </ul>
                     </div>
 
-                    <div className="mt-8 flex flex-wrap items-center gap-2">
+                    {/* Actions */}
+                    <div
+                        className="
+                            mt-7
+                            grid
+                            grid-cols-[1fr_1fr_auto]
+                            gap-2
+                            sm:flex
+                            sm:flex-wrap
+                            sm:items-center
+                            sm:gap-2
+                        "
+                    >
                         <button
                             type="button"
                             onClick={() => setArchitectureOpen(true)}
                             className="
                                 inline-flex
-                                cursor-pointer
+                                min-h-10
                                 items-center
-                                gap-2
-                                rounded-xl
+                                justify-center
+                                gap-1.5
+                                rounded-lg
                                 bg-[#08090B]
-                                px-4
-                                py-2.5
-                                text-[13.5px]
+                                px-3
+                                py-2
+                                text-[11px]
                                 font-medium
                                 text-white
                                 transition-all
@@ -155,10 +223,18 @@ export default function ProjectCard({
                                 focus:outline-none
                                 focus-visible:ring-2
                                 focus-visible:ring-[#4F7CFF]/70
+                                cursor-pointer
+                                sm:min-h-11
+                                sm:rounded-xl
+                                sm:px-4
+                                sm:text-[13.5px]
                             "
                         >
-                            <Layers3 className="h-4 w-4" />
-                            View Architecture
+                            <Layers3 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+
+                            <span className="truncate">
+                                Architecture
+                            </span>
                         </button>
 
                         <a
@@ -167,38 +243,32 @@ export default function ProjectCard({
                             rel="noopener noreferrer"
                             className="
                                 inline-flex
+                                min-h-10
                                 items-center
+                                justify-center
                                 gap-1.5
-                                rounded-xl
+                                rounded-lg
                                 border
                                 border-[#E8EAEE]
-                                px-4
-                                py-2.5
-                                text-[13.5px]
+                                px-3
+                                py-2
+                                text-[11px]
                                 font-medium
                                 text-[#171B22]
                                 transition-colors
                                 hover:bg-[#F1F2F3]
                                 focus:outline-none
+                                focus-visible:ring-2
+                                focus-visible:ring-[#4F7CFF]/40
+                                sm:min-h-11
+                                sm:rounded-xl
+                                sm:px-4
+                                sm:text-[13.5px]
                             "
                         >
                             Live Demo
 
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="20"
-                                height="20"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                aria-hidden="true"
-                            >
-                                <path d="M7 7h10v10" />
-                                <path d="M7 17 17 7" />
-                            </svg>
+                            <ArrowUpRight className="h-3.5 w-3.5" />
                         </a>
 
                         <a
@@ -211,19 +281,24 @@ export default function ProjectCard({
                                 h-10
                                 w-10
                                 place-items-center
-                                rounded-xl
+                                rounded-lg
                                 border
                                 border-[#E8EAEE]
                                 text-[#171B22]
                                 transition-colors
                                 hover:bg-[#FAFAFA]
                                 focus:outline-none
+                                focus-visible:ring-2
+                                focus-visible:ring-[#4F7CFF]/40
+                                sm:h-11
+                                sm:w-11
+                                sm:rounded-xl
                             "
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                width="20"
-                                height="20"
+                                width="18"
+                                height="18"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
@@ -239,20 +314,22 @@ export default function ProjectCard({
                     </div>
                 </div>
 
-                {/* Right / Image */}
-
+                {/* Image */}
                 <div
                     className="
                         relative
+                        order-first
                         flex
-                        min-h-70
+                        min-h-55
                         items-center
                         overflow-hidden
                         bg-[#08090B]
-                        p-5
-                        sm:min-h-80
-                        sm:p-7
-                        lg:min-h-90
+                        p-3.5
+                        sm:min-h-70
+                        sm:p-5
+                        md:order-0
+                        md:min-h-full
+                        md:p-7
                         lg:p-8
                     "
                 >
@@ -263,10 +340,12 @@ export default function ProjectCard({
                             aspect-16/10
                             w-full
                             overflow-hidden
-                            rounded-2xl
+                            rounded-xl
                             border
                             border-white/10
+                            bg-[#0B0D10]
                             shadow-(--shadow-card)
+                            sm:rounded-2xl
                         "
                     >
                         <img
@@ -280,7 +359,7 @@ export default function ProjectCard({
                                 transition-transform
                                 duration-500
                                 ease-out
-                                group-hover:scale-[1.02]
+                                group-hover:scale-[1.025]
                             "
                             loading="lazy"
                         />
@@ -291,10 +370,10 @@ export default function ProjectCard({
                                 absolute
                                 inset-x-0
                                 bottom-0
-                                h-28
+                                h-24
                                 bg-linear-to-t
                                 from-black/70
-                                via-black/25
+                                via-black/20
                                 to-transparent
                                 opacity-0
                                 transition-opacity
@@ -302,34 +381,40 @@ export default function ProjectCard({
                                 group-hover:opacity-100
                             "
                         />
-                    </div>
 
-                    <div
-                        className="
-                            absolute
-                            bottom-5
-                            left-5
-                            right-5
-                            flex
-                            items-center
-                            justify-between
-                            font-mono
-                            text-[11px]
-                            text-[#8A919E]
-                            sm:bottom-6
-                            sm:left-7
-                            sm:right-7
-                            lg:bottom-7
-                            lg:left-8
-                            lg:right-8
-                        "
-                    >
-                        <span>Full Stack</span>
+                        {/* Image label */}
+                        <div
+                            className="
+                                pointer-events-none
+                                absolute
+                                bottom-2.5
+                                left-2.5
+                                right-2.5
+                                flex
+                                items-center
+                                justify-between
+                                font-mono
+                                text-[8px]
+                                uppercase
+                                tracking-[0.12em]
+                                text-white/55
+                                opacity-0
+                                transition-opacity
+                                duration-300
+                                group-hover:opacity-100
+                                sm:bottom-3.5
+                                sm:left-3.5
+                                sm:right-3.5
+                                sm:text-[9px]
+                            "
+                        >
+                            <span>Interface Preview</span>
 
-                        <span className="flex items-center gap-1.5 text-emerald-400">
-                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                            <span>{project.status}</span>
-                        </span>
+                            <span className="flex items-center gap-1.5 text-emerald-400">
+                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                                {project.status}
+                            </span>
+                        </div>
                     </div>
                 </div>
             </article>
