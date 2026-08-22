@@ -38,7 +38,7 @@ import {
     SiMysql,
     SiLinux,
     SiFigma,
-    SiPrettier
+    SiPrettier,
 } from "react-icons/si"
 
 import { TbApi } from "react-icons/tb"
@@ -107,7 +107,7 @@ const skillGroups: SkillGroup[] = [
             { name: "Prettier", icon: SiPrettier },
             { name: "Vitest", icon: SiVitest },
             { name: "Postman", icon: SiPostman },
-            {name: "Linux", icon: SiLinux},
+            { name: "Linux", icon: SiLinux },
             { name: "Figma", icon: SiFigma },
         ],
     },
@@ -158,31 +158,55 @@ export default function Skills() {
                 w-full
                 overflow-hidden
                 bg-[#EEF2F7]
-                py-24
+                py-20
                 text-[#11151A]
-                sm:py-32
+                sm:py-24
+                lg:py-32
             "
         >
-
+            {/* Top fade */}
             <div
                 className="
                     pointer-events-none
-                    absolute inset-x-0 top-0
-                    h-24
+                    absolute
+                    inset-x-0
+                    top-0
+                    h-20
                     bg-linear-to-b
                     from-white/70
                     to-transparent
+                    sm:h-24
                 "
             />
 
-            <div className="relative mx-auto max-w-6xl px-6 lg:px-8">
-
-                {/* Header */}
+            <div
+                className="
+                    relative
+                    mx-auto
+                    w-full
+                    max-w-6xl
+                    px-5
+                    sm:px-6
+                    lg:px-8
+                "
+            >
+                {/* =========================================================
+                    HEADER
+                ========================================================== */}
 
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.35 }}
+                    initial={{
+                        opacity: 0,
+                        y: 30,
+                    }}
+                    whileInView={{
+                        opacity: 1,
+                        y: 0,
+                    }}
+                    viewport={{
+                        once: true,
+                        amount: 0.3,
+                    }}
                     transition={{
                         duration: 0.8,
                         ease: [0.22, 1, 0.36, 1],
@@ -194,10 +218,11 @@ export default function Skills() {
                             items-center
                             gap-2.5
                             font-mono
-                            text-[10px]
+                            text-[9px]
                             uppercase
                             tracking-[0.18em]
                             text-[#77818D]
+                            sm:text-[10px]
                         "
                     >
                         <span
@@ -214,14 +239,15 @@ export default function Skills() {
 
                     <h2
                         className="
-                            mt-5
+                            mt-4
                             max-w-3xl
                             font-display
-                            text-[clamp(2.5rem,5vw,4.2rem)]
+                            text-[clamp(2.3rem,9vw,4.2rem)]
                             font-medium
                             leading-[0.94]
                             tracking-[-0.06em]
                             text-[#101418]
+                            sm:mt-5
                         "
                     >
                         The tools behind the work.
@@ -229,12 +255,14 @@ export default function Skills() {
 
                     <p
                         className="
-                            mt-6
+                            mt-5
                             max-w-2xl
-                            text-[16px]
-                            leading-[1.7]
+                            text-[15px]
+                            leading-7
                             text-[#66717D]
+                            sm:mt-6
                             sm:text-[17px]
+                            sm:leading-[1.7]
                         "
                     >
                         The technologies I use across interfaces, APIs,
@@ -242,7 +270,9 @@ export default function Skills() {
                     </p>
                 </motion.div>
 
-                {/* Skill Groups */}
+                {/* =========================================================
+                    SKILL GROUPS
+                ========================================================== */}
 
                 <motion.div
                     variants={containerVariants}
@@ -250,17 +280,18 @@ export default function Skills() {
                     whileInView="visible"
                     viewport={{
                         once: true,
-                        amount: 0.12,
+                        amount: 0.08,
                     }}
                     className="
-                        mt-14
+                        mt-10
                         overflow-hidden
-                        rounded-[28px]
+                        rounded-2xl
                         border
                         border-[#DCE2EA]
                         bg-[#F7F9FC]
                         shadow-[0_22px_60px_rgba(30,48,72,0.07)]
-                        sm:mt-16
+                        sm:mt-14
+                        sm:rounded-[28px]
                     "
                 >
                     {skillGroups.map((group, index) => {
@@ -273,9 +304,12 @@ export default function Skills() {
                                 className={`
                                     group
                                     relative
-                                    px-6 py-8
-                                    sm:px-8 sm:py-9
+                                    px-4
+                                    py-6
+                                    sm:px-6
+                                    sm:py-8
                                     lg:px-10
+                                    lg:py-9
                                     ${
                                         index !==
                                         skillGroups.length - 1
@@ -287,18 +321,31 @@ export default function Skills() {
                                 <div
                                     className="
                                         grid
-                                        gap-8
-                                        md:grid-cols-[190px_1fr]
+                                        gap-5
+                                        md:grid-cols-[170px_1fr]
                                         md:items-center
+                                        md:gap-7
+                                        lg:grid-cols-[190px_1fr]
+                                        lg:gap-8
                                     "
                                 >
-                                    {/* Category */}
+                                    {/* =================================================
+                                        CATEGORY
+                                    ================================================== */}
 
-                                    <div className="flex items-center gap-4">
+                                    <div
+                                        className="
+                                            flex
+                                            items-center
+                                            gap-3
+                                            sm:gap-4
+                                        "
+                                    >
                                         <div
                                             className="
                                                 grid
-                                                h-11 w-11
+                                                h-10
+                                                w-10
                                                 shrink-0
                                                 place-items-center
                                                 rounded-xl
@@ -311,6 +358,8 @@ export default function Skills() {
                                                 group-hover:border-[#4F78D6]/30
                                                 group-hover:bg-[#E6ECF8]
                                                 group-hover:text-[#4F78D6]
+                                                sm:h-11
+                                                sm:w-11
                                             "
                                         >
                                             <GroupIcon
@@ -323,10 +372,11 @@ export default function Skills() {
                                             <p
                                                 className="
                                                     font-display
-                                                    text-[15px]
+                                                    text-[14px]
                                                     font-medium
                                                     tracking-[-0.01em]
                                                     text-[#1B2025]
+                                                    sm:text-[15px]
                                                 "
                                             >
                                                 {group.label}
@@ -334,12 +384,14 @@ export default function Skills() {
 
                                             <p
                                                 className="
-                                                    mt-1
+                                                    mt-0.5
                                                     font-mono
-                                                    text-[9px]
+                                                    text-[8px]
                                                     uppercase
                                                     tracking-[0.16em]
                                                     text-[#929AA4]
+                                                    sm:mt-1
+                                                    sm:text-[9px]
                                                 "
                                             >
                                                 {group.category}
@@ -347,21 +399,30 @@ export default function Skills() {
                                         </div>
                                     </div>
 
-                                    {/* Technologies */}
+                                    {/* =================================================
+                                        SKILLS
+                                    ================================================== */}
 
                                     <div
                                         className="
-                                            flex
-                                            flex-wrap
-                                            items-center
-                                            gap-x-6
-                                            gap-y-7
-                                            sm:gap-x-8
+                                            grid
+                                            grid-cols-3
+                                            gap-x-2
+                                            gap-y-5
+                                            sm:grid-cols-4
+                                            sm:gap-x-5
+                                            sm:gap-y-7
+                                            md:flex
+                                            md:flex-wrap
+                                            md:items-center
+                                            md:gap-x-6
+                                            md:gap-y-7
                                             lg:gap-x-10
                                         "
                                     >
                                         {group.skills.map((skill) => {
-                                            const SkillIcon = skill.icon
+                                            const SkillIcon =
+                                                skill.icon
 
                                             return (
                                                 <motion.div
@@ -376,20 +437,21 @@ export default function Skills() {
                                                     className="
                                                         group/skill
                                                         flex
-                                                        min-w-15.5
+                                                        min-w-0
                                                         cursor-default
                                                         flex-col
                                                         items-center
-                                                        gap-2.5
+                                                        gap-2
                                                     "
                                                 >
                                                     <div
                                                         className="
                                                             relative
                                                             grid
-                                                            h-12 w-12
+                                                            h-11
+                                                            w-11
                                                             place-items-center
-                                                            rounded-[14px]
+                                                            rounded-[13px]
                                                             border
                                                             border-[#DCE2EA]
                                                             bg-white
@@ -401,6 +463,8 @@ export default function Skills() {
                                                             group-hover/skill:bg-[#F8FAFF]
                                                             group-hover/skill:text-[#4F78D6]
                                                             group-hover/skill:shadow-[0_10px_24px_rgba(50,80,140,0.09)]
+                                                            sm:h-12
+                                                            sm:w-12
                                                         "
                                                     >
                                                         <span
@@ -408,7 +472,7 @@ export default function Skills() {
                                                                 pointer-events-none
                                                                 absolute
                                                                 inset-0
-                                                                rounded-[14px]
+                                                                rounded-[13px]
                                                                 border
                                                                 border-[#4F78D6]/0
                                                                 transition-all
@@ -419,7 +483,7 @@ export default function Skills() {
                                                         />
 
                                                         {SkillIcon ? (
-                                                            <SkillIcon className="relative h-5.25 w-5.25" />
+                                                            <SkillIcon className="relative h-5 w-5 sm:h-5.25 sm:w-5.25" />
                                                         ) : (
                                                             <span
                                                                 className="
@@ -436,15 +500,18 @@ export default function Skills() {
 
                                                     <span
                                                         className="
-                                                            max-w-23.75
+                                                            w-full
+                                                            max-w-[88px]
                                                             text-center
                                                             font-mono
-                                                            text-[9px]
+                                                            text-[8px]
                                                             leading-tight
                                                             text-[#7C8792]
                                                             transition-colors
                                                             duration-200
                                                             group-hover/skill:text-[#4F78D6]
+                                                            sm:max-w-[95px]
+                                                            sm:text-[9px]
                                                         "
                                                     >
                                                         {skill.name}
@@ -459,7 +526,9 @@ export default function Skills() {
                     })}
                 </motion.div>
 
-                {/* Bottom note */}
+                {/* =========================================================
+                    BOTTOM NOTE
+                ========================================================== */}
 
                 <motion.div
                     initial={{
@@ -476,10 +545,11 @@ export default function Skills() {
                         duration: 0.7,
                     }}
                     className="
-                        mt-10
+                        mt-8
                         flex
                         items-center
                         gap-3
+                        sm:mt-10
                     "
                 >
                     <motion.span
@@ -499,6 +569,7 @@ export default function Skills() {
                         }}
                         className="
                             h-px
+                            shrink-0
                             bg-[#4F78D6]/40
                         "
                     />
@@ -506,10 +577,12 @@ export default function Skills() {
                     <p
                         className="
                             font-mono
-                            text-[10px]
+                            text-[8px]
                             uppercase
-                            tracking-[0.18em]
+                            tracking-[0.14em]
                             text-[#929AA4]
+                            sm:text-[10px]
+                            sm:tracking-[0.18em]
                         "
                     >
                         Technologies I use in practice
