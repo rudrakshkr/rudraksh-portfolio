@@ -22,6 +22,7 @@ import {
     SiJavascript,
     SiNodedotjs,
     SiPostgresql,
+    SiMongodb,
     SiPostman,
     SiPrisma,
     SiReact,
@@ -92,6 +93,7 @@ const skillGroups: SkillGroup[] = [
         icon: Database,
         skills: [
             { name: "PostgreSQL", icon: SiPostgresql },
+            { name: "MongoDB", icon: SiMongodb},
             { name: "Prisma", icon: SiPrisma },
             { name: "SQL", icon: SiMysql },
         ],
